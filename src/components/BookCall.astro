@@ -4,24 +4,117 @@
       <div class="sec-tag">Consultation</div>
       <h2 class="sec-title">Schedule a consultation.</h2>
       <p class="sec-sub">
-        Select a convenient time for an introductory call — we'll review your requirements,
-        scope the engagement, and outline next steps.
+        Choose a time on the calendar, speak with our AI voice agent in your browser, or call to
+        book by phone.
       </p>
     </div>
-    <div class="cal-shell reveal">
-      <span class="cal-loading">Loading availability…</span>
-      <div id="cal-embed"></div>
+    <a class="phone-booking reveal" href="tel:+14159412580">
+      <span class="phone-label">Book with our AI voice agent</span>
+      <span class="phone-number">+1 (415) 941-2580</span>
+      <span class="phone-action">Call to book →</span>
+    </a>
+    <div class="booking-grid">
+      <div class="booking-option reveal">
+        <div class="option-head">
+          <div class="sec-tag">Voice agent</div>
+          <h3>Book in your browser.</h3>
+          <p>Talk with Melody directly and find a time that works for you.</p>
+        </div>
+        <iframe
+          class="agent-embed"
+          src="https://app.softmelody.dev/embed/agents/99ea43c5-9498-45fd-af9e-db7d32050eab"
+          title="Melody voice agent"
+          allow="microphone; autoplay"
+        ></iframe>
+      </div>
+      <div class="booking-option reveal">
+        <div class="option-head">
+          <div class="sec-tag">Calendar</div>
+          <h3>Choose a time.</h3>
+          <p>Select a convenient time for a 30-minute introductory call.</p>
+        </div>
+        <div class="cal-shell">
+          <span class="cal-loading">Loading availability…</span>
+          <div id="cal-embed"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .cal-shell {
-    position: relative;
+  .phone-booking {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding: 22px 24px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: var(--bg-2);
-    height: 680px;
+    transition:
+      border-color 0.2s,
+      transform 0.2s;
+  }
+  .phone-booking:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .phone-label {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .phone-number {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .phone-action {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .booking-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+  .booking-option {
+    min-width: 0;
+  }
+  .option-head {
+    min-height: 116px;
+    margin-bottom: 18px;
+  }
+  .option-head h3 {
+    margin: 10px 0 6px;
+    font-size: 24px;
+    letter-spacing: -0.03em;
+  }
+  .option-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .agent-embed,
+  .cal-shell {
+    width: 100%;
+    min-height: 640px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg-2);
+  }
+  .agent-embed {
+    display: block;
+  }
+  .cal-shell {
+    position: relative;
+    height: 640px;
     overflow: hidden;
   }
   .cal-loading {
@@ -41,7 +134,20 @@
     height: 100%;
     z-index: 1;
   }
+  @media (max-width: 900px) {
+    .booking-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .option-head {
+      min-height: 0;
+    }
+  }
   @media (max-width: 640px) {
+    .phone-booking {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
     .cal-shell {
       height: 720px;
     }
