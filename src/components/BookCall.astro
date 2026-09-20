@@ -26,7 +26,13 @@
   </div>
 </section>
 
-<button class="agent-launcher" type="button" aria-haspopup="dialog" aria-controls="agent-dialog">
+<button
+  class="agent-launcher"
+  type="button"
+  aria-haspopup="dialog"
+  aria-controls="agent-dialog"
+  aria-expanded="false"
+>
   <span class="agent-pulse" aria-hidden="true"></span>
   Talk to Melody
 </button>
@@ -114,9 +120,9 @@
     padding: 14px 18px;
     border: 0;
     border-radius: 999px;
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 12px 32px rgba(30, 58, 138, 0.28);
+    background: var(--text);
+    color: var(--bg);
+    box-shadow: 0 12px 32px rgba(11, 11, 15, 0.22);
     font: 600 14px var(--font-body);
     cursor: pointer;
     transition:
@@ -124,31 +130,34 @@
       box-shadow 0.2s;
   }
   .agent-launcher:hover {
+    background: #1f2430;
     transform: translateY(-2px);
-    box-shadow: 0 16px 36px rgba(30, 58, 138, 0.34);
+    box-shadow: 0 16px 36px rgba(11, 11, 15, 0.28);
   }
   .agent-pulse {
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #7dd3fc;
-    box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.2);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.16);
   }
   .agent-dialog {
-    width: min(680px, calc(100vw - 32px));
+    position: fixed;
+    inset: auto 24px 88px auto;
+    width: min(440px, calc(100vw - 32px));
     max-width: none;
-    height: min(800px, calc(100dvh - 32px));
+    height: min(720px, calc(100dvh - 112px));
     max-height: none;
+    margin: 0;
     padding: 0;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 18px;
     background: var(--bg);
     box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
     overflow: hidden;
   }
   .agent-dialog::backdrop {
-    background: rgba(15, 23, 42, 0.48);
-    backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.12);
   }
   .agent-dialog[open] {
     display: grid;
@@ -214,8 +223,10 @@
       bottom: 16px;
     }
     .agent-dialog {
-      width: calc(100vw - 16px);
-      height: calc(100dvh - 16px);
+      inset: 8px;
+      width: auto;
+      height: auto;
+      border-radius: 14px;
     }
     .cal-shell {
       height: 720px;
@@ -280,5 +291,8 @@
   agentClose?.addEventListener("click", () => agentDialog?.close());
   agentDialog?.addEventListener("click", (event) => {
     if (event.target === agentDialog) agentDialog.close();
+  });
+  agentDialog?.addEventListener("toggle", () => {
+    agentLauncher?.setAttribute("aria-expanded", String(agentDialog.open));
   });
 </script>
