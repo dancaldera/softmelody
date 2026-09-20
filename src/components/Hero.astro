@@ -70,43 +70,11 @@ const amps = [
         </div>
       </div>
     </div>
-    <div class="hero-stats rise" style="--d:.6s">
-      <div class="stat"><b><i data-count="5">0</i></b><span>products shipped</span></div>
-      <div class="stat"><b><i data-count="3">0</i></b><span>industries served</span></div>
-      <div class="stat"><b><i data-count="100">0</i>+</b><span>open-source repos</span></div>
-      <div class="stat"><b><i>1</i></b><span>senior lead, end to end</span></div>
-    </div>
   </div>
 </section>
 
 <script>
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const counters = document.querySelectorAll<HTMLElement>("[data-count]");
-  const cio = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        cio.unobserve(e.target);
-        const el = e.target as HTMLElement;
-        const target = Number(el.dataset.count);
-        if (reduced) {
-          el.textContent = String(target);
-          continue;
-        }
-        const t0 = performance.now();
-        const dur = 1000;
-        const tick = (t: number) => {
-          const p = Math.min((t - t0) / dur, 1);
-          el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    },
-    { threshold: 0.6 },
-  );
-  counters.forEach((c) => cio.observe(c));
 
   /* ---------- call timer ---------- */
   const timerEl = document.getElementById("call-timer");
@@ -242,40 +210,6 @@ const amps = [
     flex-wrap: wrap;
     gap: 14px;
     margin-top: 40px;
-  }
-
-  .hero-stats {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 64px;
-    border-top: 1px solid var(--line);
-  }
-  .stat {
-    padding: 22px 40px 0 0;
-    margin-right: 40px;
-    border-right: 1px solid var(--line);
-  }
-  .stat:last-child {
-    border-right: 0;
-    margin-right: 0;
-  }
-  .stat b {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 30px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
-  .stat b i {
-    font-style: normal;
-    color: var(--text);
-  }
-  .stat span {
-    font-size: 13px;
-    color: var(--faint);
-    font-family: var(--font-mono);
-    letter-spacing: 0.04em;
   }
 
   /* ---------- live call panel ---------- */
