@@ -8,58 +8,63 @@
         book by phone.
       </p>
     </div>
-    <a class="phone-booking reveal" href="tel:+14159412580">
-      <span class="phone-label">Book with our AI voice agent</span>
-      <span class="phone-number">+1 (415) 941-2580</span>
-      <span class="phone-action">Call to book →</span>
-    </a>
-    <div class="booking-grid">
-      <div class="booking-option reveal">
-        <div class="option-head">
-          <div class="sec-tag">Voice agent</div>
-          <h3>Book in your browser.</h3>
-          <p>Talk with Melody directly and find a time that works for you.</p>
-        </div>
-        <iframe
-          class="agent-embed"
-          src="https://app.softmelody.dev/embed/agents/99ea43c5-9498-45fd-af9e-db7d32050eab"
-          title="Melody voice agent"
-          allow="microphone; autoplay"
-        ></iframe>
-      </div>
-      <div class="booking-option reveal">
-        <div class="option-head">
-          <div class="sec-tag">Calendar</div>
-          <h3>Choose a time.</h3>
-          <p>Select a convenient time for a 30-minute introductory call.</p>
-        </div>
-        <div class="cal-shell">
-          <span class="cal-loading">Loading availability…</span>
-          <div id="cal-embed"></div>
-        </div>
-      </div>
+    <div class="phone-card reveal">
+      <a class="phone-booking" href="tel:+14159412580">
+        <span class="phone-label">Book with our AI voice agent</span>
+        <span class="phone-number">+1 (415) 941-2580</span>
+        <span class="phone-action">Call to book →</span>
+      </a>
+      <p class="agent-instruction">
+        Prefer to talk here? Use the <strong>Talk to Melody</strong> button in the bottom-right corner
+        to book directly from this page.
+      </p>
+    </div>
+    <div class="cal-shell reveal">
+      <span class="cal-loading">Loading availability…</span>
+      <div id="cal-embed"></div>
     </div>
   </div>
 </section>
 
+<button class="agent-launcher" type="button" aria-haspopup="dialog" aria-controls="agent-dialog">
+  <span class="agent-pulse" aria-hidden="true"></span>
+  Talk to Melody
+</button>
+
+<dialog class="agent-dialog" id="agent-dialog" aria-labelledby="agent-dialog-title">
+  <div class="agent-dialog-head">
+    <div>
+      <div class="sec-tag">Voice agent</div>
+      <h2 id="agent-dialog-title">Book with Melody</h2>
+    </div>
+    <button class="agent-close" type="button" aria-label="Close voice agent">×</button>
+  </div>
+  <iframe
+    class="agent-embed"
+    src="https://app.softmelody.dev/embed/agents/99ea43c5-9498-45fd-af9e-db7d32050eab"
+    title="Melody voice agent"
+    allow="microphone; autoplay"
+  ></iframe>
+</dialog>
+
 <style>
+  .phone-card {
+    margin-bottom: 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-2);
+    overflow: hidden;
+  }
   .phone-booking {
     display: grid;
     grid-template-columns: 1fr auto auto;
     align-items: center;
     gap: 24px;
-    margin-bottom: 24px;
     padding: 22px 24px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--bg-2);
-    transition:
-      border-color 0.2s,
-      transform 0.2s;
+    transition: background 0.2s;
   }
   .phone-booking:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+    background: rgba(30, 58, 138, 0.04);
   }
   .phone-label {
     font-size: 15px;
@@ -77,45 +82,110 @@
     text-transform: uppercase;
     color: var(--accent);
   }
-  .booking-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    align-items: start;
-  }
-  .booking-option {
-    min-width: 0;
-  }
-  .option-head {
-    min-height: 116px;
-    margin-bottom: 18px;
-  }
-  .option-head h3 {
-    margin: 10px 0 6px;
-    font-size: 24px;
-    letter-spacing: -0.03em;
-  }
-  .option-head p {
+  .agent-instruction {
     margin: 0;
+    padding: 16px 24px;
+    border-top: 1px solid var(--line);
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
   }
-  .agent-embed,
-  .cal-shell {
-    width: 100%;
-    min-height: 640px;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    background: var(--bg-2);
-  }
-  .agent-embed {
-    display: block;
+  .agent-instruction strong {
+    color: var(--text);
+    font-weight: 600;
   }
   .cal-shell {
     position: relative;
-    height: 640px;
+    width: 100%;
+    height: 680px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg-2);
     overflow: hidden;
+  }
+  .agent-launcher {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 45;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 12px 32px rgba(30, 58, 138, 0.28);
+    font: 600 14px var(--font-body);
+    cursor: pointer;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .agent-launcher:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(30, 58, 138, 0.34);
+  }
+  .agent-pulse {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #7dd3fc;
+    box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.2);
+  }
+  .agent-dialog {
+    width: min(680px, calc(100vw - 32px));
+    max-width: none;
+    height: min(800px, calc(100dvh - 32px));
+    max-height: none;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg);
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
+    overflow: hidden;
+  }
+  .agent-dialog::backdrop {
+    background: rgba(15, 23, 42, 0.48);
+    backdrop-filter: blur(4px);
+  }
+  .agent-dialog[open] {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+  .agent-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .agent-dialog-head h2 {
+    margin: 6px 0 0;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+  }
+  .agent-close {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--bg-2);
+    color: var(--text);
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .agent-embed {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border: 0;
   }
   .cal-loading {
     position: absolute;
@@ -134,19 +204,18 @@
     height: 100%;
     z-index: 1;
   }
-  @media (max-width: 900px) {
-    .booking-grid {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    .option-head {
-      min-height: 0;
-    }
-  }
   @media (max-width: 640px) {
     .phone-booking {
       grid-template-columns: 1fr;
       gap: 8px;
+    }
+    .agent-launcher {
+      right: 16px;
+      bottom: 16px;
+    }
+    .agent-dialog {
+      width: calc(100vw - 16px);
+      height: calc(100dvh - 16px);
     }
     .cal-shell {
       height: 720px;
@@ -201,5 +270,15 @@
     theme: "light",
     layout: "month_view",
     cssVarsPerTheme: { light: { "cal-brand": "#1e3a8a" } },
+  });
+
+  const agentDialog = document.querySelector<HTMLDialogElement>("#agent-dialog");
+  const agentLauncher = document.querySelector<HTMLButtonElement>(".agent-launcher");
+  const agentClose = document.querySelector<HTMLButtonElement>(".agent-close");
+
+  agentLauncher?.addEventListener("click", () => agentDialog?.showModal());
+  agentClose?.addEventListener("click", () => agentDialog?.close());
+  agentDialog?.addEventListener("click", (event) => {
+    if (event.target === agentDialog) agentDialog.close();
   });
 </script>
