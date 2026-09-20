@@ -6,9 +6,8 @@ Landing page for **Softmelody** — the independent AI consultancy of [Daniel Ca
 
 [Astro](https://astro.build) — static site, zero client framework. Vanilla TS + scoped CSS with:
 
-- Neural-network canvas hero (mouse-reactive, DPR-aware)
-- Aurora gradient orbs, grid mask, grain overlay
-- Scroll-reveal animations, spotlight cards, counters, rotating headline
+- Minimal light palette with a single accent; subtle fade-in and hover transitions only
+- Scroll-reveal animations and counters
 - Contact section with copy-email and mailto composer
 - `prefers-reduced-motion` fully respected
 
@@ -18,7 +17,7 @@ Landing page for **Softmelody** — the independent AI consultancy of [Daniel Ca
 src/
 ├── layouts/Layout.astro     # head, meta, fonts, ambient background, reveal observer
 ├── pages/index.astro        # page composition
-├── components/              # Nav, Hero, Marquee, Products, Services, About, Contact, Footer
+├── components/              # Nav, Hero, Products, Services, About, Contact, Footer
 └── styles/global.css        # design tokens + shared utilities
 ```
 

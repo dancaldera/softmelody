@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#06060b" />
+    <meta name="theme-color" content="#ffffff" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -31,17 +31,11 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <div class="atmo" aria-hidden="true">
-      <div class="orb orb-a"></div>
-      <div class="orb orb-b"></div>
-      <div class="orb orb-c"></div>
-    </div>
-    <div class="noise" aria-hidden="true"></div>
     <slot />
     <script>
       const io = new IntersectionObserver(

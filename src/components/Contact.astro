@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="contact-box reveal">
       <div class="avail">Currently taking new engagements</div>
-      <h2>Let's build something <span class="grad-text">intelligent</span>.</h2>
+      <h2>Let's build something intelligent.</h2>
       <p class="contact-sub">
         Tell me what you're building. I reply personally — usually within one business day.
       </p>
@@ -108,33 +108,16 @@
     padding-bottom: 140px;
   }
   .contact-box {
-    position: relative;
-    border-radius: 28px;
+    border-radius: 12px;
     padding: 72px 56px;
-    border: 1px solid var(--line-2);
-    background:
-      radial-gradient(700px 300px at 20% -10%, rgba(139, 124, 255, 0.16), transparent 60%),
-      radial-gradient(600px 300px at 85% 110%, rgba(79, 216, 232, 0.1), transparent 60%),
-      var(--bg-2);
-    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-2);
     text-align: center;
   }
-  .contact-box::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent 80%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent 80%);
-    pointer-events: none;
-  }
   h2 {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: clamp(32px, 5vw, 54px);
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1.06;
   }
@@ -152,17 +135,15 @@
     font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #7ef0c2;
+    color: var(--muted);
     margin-bottom: 26px;
   }
   .avail::before {
     content: "";
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: #7ef0c2;
-    box-shadow: 0 0 12px #7ef0c2;
-    animation: pulse 2s infinite;
+    background: var(--accent);
   }
 
   .mail-row {
@@ -179,26 +160,24 @@
     font-weight: 500;
     color: var(--text);
     padding: 16px 30px;
-    border-radius: 14px;
+    border-radius: 8px;
     border: 1px solid var(--line-2);
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--surface);
     transition:
-      border-color 0.3s,
-      box-shadow 0.3s,
-      transform 0.3s var(--ease);
+      border-color 0.2s ease,
+      transform 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 12px;
   }
   .mail-link:hover {
-    border-color: rgba(139, 124, 255, 0.6);
-    box-shadow: 0 0 36px rgba(139, 124, 255, 0.22);
+    border-color: var(--text);
     transform: translateY(-2px);
   }
   .mail-link svg {
     width: 20px;
     height: 20px;
-    stroke: var(--violet);
+    stroke: var(--muted);
   }
   .copy-btn {
     display: inline-flex;
@@ -208,14 +187,14 @@
     font-size: 13px;
     color: var(--muted);
     padding: 16px 22px;
-    border-radius: 14px;
+    border-radius: 8px;
     cursor: pointer;
     border: 1px solid var(--line);
     background: var(--surface);
     transition:
-      color 0.3s,
-      border-color 0.3s,
-      transform 0.3s var(--ease);
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
   .copy-btn:hover {
     color: var(--text);
@@ -223,8 +202,8 @@
     transform: translateY(-2px);
   }
   .copy-btn.copied {
-    color: #7ef0c2;
-    border-color: rgba(126, 240, 194, 0.4);
+    color: var(--accent);
+    border-color: var(--accent);
   }
   .copy-btn svg {
     width: 15px;
@@ -247,17 +226,17 @@
     font-size: 14px;
     color: var(--text);
     padding: 14px 18px;
-    border-radius: 12px;
+    border-radius: 8px;
     border: 1px solid var(--line);
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--surface);
     outline: none;
     transition:
-      border-color 0.3s,
-      box-shadow 0.3s;
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
   .contact-form input:focus {
-    border-color: rgba(139, 124, 255, 0.6);
-    box-shadow: 0 0 0 3px rgba(139, 124, 255, 0.15);
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px var(--accent-soft);
   }
   .contact-form input::placeholder {
     color: var(--faint);
@@ -265,7 +244,6 @@
   .contact-form .btn {
     padding: 14px 24px;
     font-size: 14px;
-    border: 0;
   }
 
   .socials {
@@ -277,25 +255,22 @@
     z-index: 1;
   }
   .social {
-    width: 46px;
-    height: 46px;
-    border-radius: 13px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     border: 1px solid var(--line);
-    background: var(--surface);
     color: var(--muted);
     transition:
-      color 0.3s,
-      border-color 0.3s,
-      transform 0.35s var(--ease),
-      box-shadow 0.3s;
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
   .social:hover {
     color: var(--text);
-    border-color: rgba(139, 124, 255, 0.55);
-    transform: translateY(-4px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    border-color: var(--text);
+    transform: translateY(-2px);
   }
   .social svg {
     width: 19px;

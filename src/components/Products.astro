@@ -123,37 +123,19 @@ const products: Product[] = [
   .card {
     position: relative;
     grid-column: span 2;
-    padding: 28px;
-    border-radius: 20px;
+    padding: 24px;
+    border-radius: 12px;
     border: 1px solid var(--line);
     background: var(--surface);
-    overflow: hidden;
     transition:
-      transform 0.4s var(--ease),
-      border-color 0.4s,
-      background 0.4s;
-  }
-  .card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    opacity: 0;
-    background: radial-gradient(
-      420px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(139, 124, 255, 0.14),
-      transparent 60%
-    );
-    transition: opacity 0.4s;
-    pointer-events: none;
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
   .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
     border-color: var(--line-2);
-    background: var(--surface-2);
-  }
-  .card:hover::before {
-    opacity: 1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }
   .card.wide {
     grid-column: span 4;
@@ -178,26 +160,19 @@ const products: Product[] = [
     margin-bottom: 22px;
   }
   .card-icon {
-    width: 46px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
     flex-shrink: 0;
-    border-radius: 13px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
-    color: var(--violet);
-    background: linear-gradient(135deg, rgba(139, 124, 255, 0.18), rgba(79, 216, 232, 0.1));
-    border: 1px solid rgba(139, 124, 255, 0.28);
-    transition:
-      transform 0.4s var(--ease),
-      box-shadow 0.4s;
-  }
-  .card:hover .card-icon {
-    transform: scale(1.08) rotate(-4deg);
-    box-shadow: 0 0 28px rgba(139, 124, 255, 0.3);
+    color: var(--text);
+    background: var(--bg-2);
+    border: 1px solid var(--line);
   }
   .card-icon :global(svg) {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
   .badge {
     font-family: var(--font-mono);
@@ -208,12 +183,8 @@ const products: Product[] = [
     border-radius: 999px;
     border: 1px solid var(--line);
     color: var(--muted);
-    background: rgba(0, 0, 0, 0.25);
+    background: transparent;
     white-space: nowrap;
-  }
-  .badge.live {
-    color: #7ef0c2;
-    border-color: rgba(126, 240, 194, 0.3);
   }
   .badge.live::before {
     content: "";
@@ -221,18 +192,12 @@ const products: Product[] = [
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #7ef0c2;
+    background: var(--accent);
     margin-right: 7px;
-    box-shadow: 0 0 8px #7ef0c2;
-    animation: pulse 2s infinite;
     vertical-align: 1px;
   }
-  .badge.oss {
-    color: var(--cyan);
-    border-color: rgba(79, 216, 232, 0.3);
-  }
   .card h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 21px;
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -242,16 +207,11 @@ const products: Product[] = [
   }
   .card h3 .arrow {
     margin-left: auto;
-    opacity: 0;
-    transform: translate(-6px, 6px);
-    transition:
-      opacity 0.35s var(--ease),
-      transform 0.35s var(--ease);
-    color: var(--violet);
+    color: var(--faint);
+    transition: color 0.2s ease;
   }
   .card:hover h3 .arrow {
-    opacity: 1;
-    transform: none;
+    color: var(--text);
   }
   .card p {
     color: var(--muted);
@@ -272,13 +232,6 @@ const products: Product[] = [
     padding: 4px 10px;
     border-radius: 6px;
     border: 1px solid var(--line);
-    transition:
-      color 0.3s,
-      border-color 0.3s;
-  }
-  .card:hover .tag {
-    color: var(--muted);
-    border-color: var(--line-2);
   }
 
   @media (max-width: 900px) {
@@ -301,13 +254,3 @@ const products: Product[] = [
     }
   }
 </style>
-
-<script>
-  document.querySelectorAll<HTMLElement>(".card").forEach((card) => {
-    card.addEventListener("mousemove", (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      card.style.setProperty("--my", `${e.clientY - r.top}px`);
-    });
-  });
-</script>

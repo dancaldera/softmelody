@@ -4,16 +4,10 @@
       <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
         <path
           d="M4 16h3l2.5-8 4 16 3.5-12 2.5 6 2-4H28"
-          stroke="url(#lg)"
+          stroke="currentColor"
           stroke-width="2.4"
           stroke-linecap="round"
           stroke-linejoin="round"></path>
-        <defs>
-          <linearGradient id="lg" x1="4" y1="16" x2="28" y2="16">
-            <stop stop-color="#8b7cff"></stop>
-            <stop offset="1" stop-color="#4fd8e8"></stop>
-          </linearGradient>
-        </defs>
       </svg>
       softmelody
     </a>
@@ -37,16 +31,14 @@
     display: flex;
     align-items: center;
     transition:
-      background 0.4s var(--ease),
-      border-color 0.4s var(--ease),
-      height 0.4s var(--ease);
+      background 0.25s,
+      border-color 0.25s;
     border-bottom: 1px solid transparent;
   }
   .nav.scrolled {
-    height: 60px;
-    background: rgba(6, 6, 11, 0.72);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom-color: var(--line);
   }
   .nav-inner {
@@ -58,7 +50,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-weight: 600;
     font-size: 17px;
     letter-spacing: -0.01em;
@@ -81,41 +73,19 @@
   .nav-links a:hover {
     color: var(--text);
   }
-  .nav-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 100%;
-    height: 1px;
-    background: var(--grad);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.35s var(--ease);
-  }
-  .nav-links a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
   .nav-cta {
     font-size: 13px;
     font-weight: 500;
     color: var(--text) !important;
     padding: 8px 18px;
-    border-radius: 999px;
+    border-radius: 8px;
     border: 1px solid var(--line-2);
-    background: var(--surface);
     transition:
-      border-color 0.3s,
-      background 0.3s,
-      box-shadow 0.3s;
+      border-color 0.2s ease,
+      background 0.2s ease;
   }
   .nav-cta:hover {
-    border-color: rgba(139, 124, 255, 0.6);
-    box-shadow: 0 0 24px rgba(139, 124, 255, 0.25);
-  }
-  .nav-cta::after {
-    display: none;
+    border-color: var(--text);
   }
   @media (max-width: 640px) {
     .nav-links a:not(.nav-cta) {
