@@ -1,0 +1,96 @@
+<section id="about" style="padding-top:20px">
+  <div class="wrap">
+    <div class="about reveal">
+      <div>
+        <div class="about-name">Daniel Caldera</div>
+        <div class="about-role">FOUNDER · AI ENGINEER</div>
+        <div class="about-loc">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          Working remotely, worldwide
+        </div>
+      </div>
+      <p class="about-bio">
+        Biomedical &amp; AI engineer building AI-powered solutions in <strong
+          >fintech, medtech, and communications</strong
+        >. Founder of Melody (voice AI), Authia (identity &amp; security), and OpenPOS — plus a
+        steady stream of open-source tools. Softmelody is how that experience gets applied to
+        <strong>your</strong> product.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 56px;
+    background: linear-gradient(140deg, var(--surface), transparent 60%);
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .about::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79, 216, 232, 0.12), transparent 65%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .about-name {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .about-role {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--violet);
+    margin-top: 8px;
+    letter-spacing: 0.06em;
+  }
+  .about-loc {
+    font-size: 13px;
+    color: var(--faint);
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .about-bio {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+  .about-bio strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  @media (max-width: 800px) {
+    .about {
+      grid-template-columns: 1fr;
+      padding: 36px 28px;
+    }
+  }
+</style>

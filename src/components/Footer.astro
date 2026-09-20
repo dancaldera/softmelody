@@ -1,0 +1,46 @@
+<footer>
+  <div class="wrap foot">
+    <small>© <span id="year">2026</span> Softmelody · Daniel Caldera. All rights reserved.</small>
+    <div class="foot-links">
+      <a href="https://app.softmelody.dev/" target="_blank" rel="noopener">Melody</a>
+      <a href="https://authia.softmelody.dev/" target="_blank" rel="noopener">Authia</a>
+      <a href="https://www.openpos.xyz/" target="_blank" rel="noopener">OpenPOS</a>
+      <a href="https://github.com/dancaldera" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 36px 0;
+  }
+  .foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .foot small {
+    color: var(--faint);
+    font-size: 13px;
+  }
+  .foot-links {
+    display: flex;
+    gap: 22px;
+  }
+  .foot-links a {
+    font-size: 13px;
+    color: var(--faint);
+    transition: color 0.25s;
+  }
+  .foot-links a:hover {
+    color: var(--text);
+  }
+</style>
+
+<script>
+  const year = document.getElementById("year");
+  if (year) year.textContent = String(new Date().getFullYear());
+</script>

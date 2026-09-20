@@ -1,0 +1,57 @@
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee-track">
+    <span class="marquee-item">Voice AI Agents</span>
+    <span class="marquee-item">Identity &amp; Security</span>
+    <span class="marquee-item">Applied Machine Learning</span>
+    <span class="marquee-item">Desktop Applications</span>
+    <span class="marquee-item">Data Infrastructure</span>
+    <span class="marquee-item">Full-Stack Engineering</span>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    border-block: 1px solid var(--line);
+    padding: 18px 0;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 56px;
+    width: max-content;
+    animation: marquee 32s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+  .marquee-item::after {
+    content: "◆";
+    font-size: 8px;
+    color: var(--violet);
+    opacity: 0.7;
+  }
+</style>
+
+<script>
+  const track = document.getElementById("marquee-track");
+  if (track) track.innerHTML += track.innerHTML;
+</script>

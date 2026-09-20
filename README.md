@@ -4,7 +4,7 @@ Landing page for **Softmelody** — the independent AI consultancy of [Daniel Ca
 
 ## Stack
 
-A single static `index.html` — no build step, no dependencies. Vanilla CSS + JS with:
+[Astro](https://astro.build) — static site, zero client framework. Vanilla TS + scoped CSS with:
 
 - Neural-network canvas hero (mouse-reactive, DPR-aware)
 - Aurora gradient orbs, grid mask, grain overlay
@@ -12,18 +12,30 @@ A single static `index.html` — no build step, no dependencies. Vanilla CSS + J
 - Contact section with copy-email and mailto composer
 - `prefers-reduced-motion` fully respected
 
-## Run locally
+## Structure
 
-```bash
-python3 -m http.server 8000
-# open http://localhost:8000
+```
+src/
+├── layouts/Layout.astro     # head, meta, fonts, ambient background, reveal observer
+├── pages/index.astro        # page composition
+├── components/              # Nav, Hero, Marquee, Products, Services, About, Contact, Footer
+└── styles/global.css        # design tokens + shared utilities
 ```
 
-Or just open `index.html` in a browser.
+## Develop
+
+```bash
+pnpm install
+pnpm dev        # http://localhost:4321/softmelody
+pnpm build      # outputs to dist/
+pnpm preview    # preview the production build
+```
 
 ## Deploy
 
-Any static host works — GitHub Pages, Cloudflare Pages, Vercel, Netlify. Point it at the repo root.
+Deploys to GitHub Pages via `.github/workflows/deploy.yml` on every push to `main` → https://dancaldera.github.io/softmelody/
+
+The `base` path is set in `astro.config.mjs` for the project Pages URL. When moving to a custom domain (e.g. `softmelody.dev`), update `site` and remove `base`.
 
 ## Products featured
 

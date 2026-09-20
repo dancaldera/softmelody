@@ -1,0 +1,313 @@
+---
+import Icon from "./Icon.astro";
+
+interface Product {
+  name: string;
+  url: string;
+  icon: "melody" | "shield" | "pos" | "mic" | "db" | "github";
+  badge?: { text: string; kind: "live" | "oss" | "plain" };
+  desc: string;
+  tags: string[];
+  wide?: boolean;
+}
+
+const products: Product[] = [
+  {
+    name: "Melody",
+    url: "https://app.softmelody.dev/",
+    icon: "melody",
+    badge: { text: "Live", kind: "live" },
+    desc: "Voice AI services for every customer conversation. AI-powered call workflows — inbound, outbound, and support — designed, deployed, and tuned for production.",
+    tags: ["Voice AI", "Agents", "Telephony", "SaaS"],
+    wide: true,
+  },
+  {
+    name: "Authia",
+    url: "https://authia.softmelody.dev/",
+    icon: "shield",
+    badge: { text: "Live", kind: "live" },
+    desc: "Security-first AI integration — identity verification, secure document storage, and enterprise-grade password security.",
+    tags: ["Security", "Identity", "AI"],
+  },
+  {
+    name: "OpenPOS",
+    url: "https://www.openpos.xyz/",
+    icon: "pos",
+    badge: { text: "Open Source", kind: "oss" },
+    desc: "The intelligent point of sale — offline-first, real-time sync, cross-platform desktop, with AI-powered retail insights on the roadmap.",
+    tags: ["POS", "Desktop", "Retail"],
+  },
+  {
+    name: "Flow",
+    url: "https://github.com/dancaldera/flow",
+    icon: "mic",
+    badge: { text: "Open Source", kind: "oss" },
+    desc: "Push-to-talk dictation for macOS. Hold fn, speak, release — text lands at your cursor. Lean, private, multi-provider STT.",
+    tags: ["macOS", "STT", "Electron"],
+  },
+  {
+    name: "XDB",
+    url: "https://github.com/dancaldera/xdb",
+    icon: "db",
+    badge: { text: "Open Source", kind: "oss" },
+    desc: "Local database client for PostgreSQL, MySQL & SQLite — browse tables, run SQL, back up and restore, all from your browser.",
+    tags: ["Databases", "Dev Tools"],
+  },
+];
+---
+
+<section id="products">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Products</div>
+      <h2 class="sec-title">Built, shipped, and running in production.</h2>
+      <p class="sec-sub">
+        Every engagement is informed by real products — systems that carry live traffic, real
+        users, and real consequences.
+      </p>
+    </div>
+    <div class="cards">
+      {
+        products.map((p, i) => (
+          <a
+            class:list={["card reveal", { wide: p.wide }]}
+            style={`--d:${(i % 3) * 0.08}s`}
+            href={p.url}
+            target="_blank"
+            rel="noopener"
+          >
+            <div class="card-top">
+              <div class="card-icon">
+                <Icon name={p.icon} />
+              </div>
+              {p.badge && <span class={`badge ${p.badge.kind}`}>{p.badge.text}</span>}
+            </div>
+            <h3>
+              {p.name} <span class="arrow">↗</span>
+            </h3>
+            <p>{p.desc}</p>
+            <div class="tags">
+              {p.tags.map((t) => (
+                <span class="tag">{t}</span>
+              ))}
+            </div>
+          </a>
+        ))
+      }
+      <a
+        class="card banner reveal"
+        style="--d:.24s"
+        href="https://github.com/dancaldera"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="card-icon">
+          <Icon name="github" />
+        </div>
+        <div class="banner-body">
+          <h3>More on GitHub <span class="arrow">↗</span></h3>
+          <p>100+ repositories — experiments, tools, and open-source work across AI, systems, and developer tooling.</p>
+        </div>
+        <span class="badge">@dancaldera</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+  }
+  .card {
+    position: relative;
+    grid-column: span 2;
+    padding: 28px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    overflow: hidden;
+    transition:
+      transform 0.4s var(--ease),
+      border-color 0.4s,
+      background 0.4s;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(139, 124, 255, 0.14),
+      transparent 60%
+    );
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: var(--line-2);
+    background: var(--surface-2);
+  }
+  .card:hover::before {
+    opacity: 1;
+  }
+  .card.wide {
+    grid-column: span 4;
+  }
+  .card.banner {
+    grid-column: span 6;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 24px 28px;
+  }
+  .banner-body {
+    flex: 1;
+  }
+  .banner-body p {
+    margin-top: 4px;
+  }
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .card-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    color: var(--violet);
+    background: linear-gradient(135deg, rgba(139, 124, 255, 0.18), rgba(79, 216, 232, 0.1));
+    border: 1px solid rgba(139, 124, 255, 0.28);
+    transition:
+      transform 0.4s var(--ease),
+      box-shadow 0.4s;
+  }
+  .card:hover .card-icon {
+    transform: scale(1.08) rotate(-4deg);
+    box-shadow: 0 0 28px rgba(139, 124, 255, 0.3);
+  }
+  .card-icon :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+  }
+  .badge.live {
+    color: #7ef0c2;
+    border-color: rgba(126, 240, 194, 0.3);
+  }
+  .badge.live::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7ef0c2;
+    margin-right: 7px;
+    box-shadow: 0 0 8px #7ef0c2;
+    animation: pulse 2s infinite;
+    vertical-align: 1px;
+  }
+  .badge.oss {
+    color: var(--cyan);
+    border-color: rgba(79, 216, 232, 0.3);
+  }
+  .card h3 {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h3 .arrow {
+    margin-left: auto;
+    opacity: 0;
+    transform: translate(-6px, 6px);
+    transition:
+      opacity 0.35s var(--ease),
+      transform 0.35s var(--ease);
+    color: var(--violet);
+  }
+  .card:hover h3 .arrow {
+    opacity: 1;
+    transform: none;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 14.5px;
+    margin-top: 10px;
+    line-height: 1.65;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--faint);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    transition:
+      color 0.3s,
+      border-color 0.3s;
+  }
+  .card:hover .tag {
+    color: var(--muted);
+    border-color: var(--line-2);
+  }
+
+  @media (max-width: 900px) {
+    .card,
+    .card.wide {
+      grid-column: span 6;
+    }
+  }
+  @media (max-width: 560px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .card,
+    .card.wide,
+    .card.banner {
+      grid-column: auto;
+    }
+    .card.banner {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".card").forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      card.style.setProperty("--my", `${e.clientY - r.top}px`);
+    });
+  });
+</script>
