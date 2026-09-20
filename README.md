@@ -1,6 +1,6 @@
 # Softmelody
 
-Landing page for **Softmelody** — the independent AI consultancy of [Daniel Caldera](https://github.com/dancaldera). Enterprise-grade AI, engineered to ship.
+Landing page for **Softmelody** — an independent AI consultancy. Enterprise-grade AI, engineered to ship.
 
 ## Stack
 

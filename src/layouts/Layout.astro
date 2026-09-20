@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title = "Softmelody — Enterprise-Grade AI, Engineered to Ship",
-  description = "Softmelody is the independent AI consultancy of Daniel Caldera. Voice AI, identity & security, and intelligent products — designed, built, and shipped end to end.",
+  description = "Softmelody is an independent AI consultancy. Voice AI, identity & security, and intelligent products — designed, built, and shipped end to end.",
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.endsWith("/")
@@ -25,7 +25,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).hr
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="author" content="Daniel Caldera" />
+    <meta name="author" content="Softmelody" />
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
