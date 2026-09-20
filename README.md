@@ -34,7 +34,7 @@ pnpm preview    # preview the production build
 
 Deploys to GitHub Pages via `.github/workflows/deploy.yml` on every push to `main` → https://dancaldera.github.io/softmelody/
 
-The `base` path is set in `astro.config.mjs` for the project Pages URL. When moving to a custom domain (e.g. `softmelody.dev`), update `site` and remove `base`.
+`astro.config.mjs` applies `base: "/softmelody"` only when `GITHUB_ACTIONS` is set, so Pages keeps its project path while Vercel and other hosts serve from the domain root. The non-CI `site` is `softmelody.dev` — update it if the production domain differs.
 
 ## Products featured
 
