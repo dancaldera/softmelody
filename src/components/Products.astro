@@ -4,7 +4,7 @@ import Icon from "./Icon.astro";
 interface Product {
   name: string;
   url: string;
-  icon: "melody" | "shield" | "pos" | "mic" | "db" | "github";
+  icon: "melody" | "shield" | "pos" | "mic" | "db";
   badge?: { text: string; kind: "live" | "oss" | "plain" };
   desc: string;
   tags: string[];
@@ -94,22 +94,6 @@ const products: Product[] = [
           </a>
         ))
       }
-      <a
-        class="card banner reveal"
-        style="--d:.24s"
-        href="https://github.com/dancaldera"
-        target="_blank"
-        rel="noopener"
-      >
-        <div class="card-icon">
-          <Icon name="github" />
-        </div>
-        <div class="banner-body">
-          <h3>More on GitHub <span class="arrow">↗</span></h3>
-          <p>100+ repositories — experiments, tools, and open-source work across AI, systems, and developer tooling.</p>
-        </div>
-        <span class="badge">@dancaldera</span>
-      </a>
     </div>
   </div>
 </section>
@@ -139,19 +123,6 @@ const products: Product[] = [
   }
   .card.wide {
     grid-column: span 4;
-  }
-  .card.banner {
-    grid-column: span 6;
-    display: flex;
-    align-items: center;
-    gap: 22px;
-    padding: 24px 28px;
-  }
-  .banner-body {
-    flex: 1;
-  }
-  .banner-body p {
-    margin-top: 4px;
   }
   .card-top {
     display: flex;
@@ -245,12 +216,8 @@ const products: Product[] = [
       grid-template-columns: 1fr;
     }
     .card,
-    .card.wide,
-    .card.banner {
+    .card.wide {
       grid-column: auto;
-    }
-    .card.banner {
-      flex-wrap: wrap;
     }
   }
 </style>
