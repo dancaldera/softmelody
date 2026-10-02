@@ -17,6 +17,14 @@
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a class="nav-cta" href="#book">Book a call</a>
+      <a
+        class="nav-cta nav-cta-solid"
+        href="https://app.softmelody.dev"
+        target="_blank"
+        rel="noopener"
+      >
+        Go to app ↗
+      </a>
     </nav>
   </div>
 </header>
@@ -88,9 +96,25 @@
   .nav-cta:hover {
     border-color: var(--text);
   }
+  .nav-cta-solid {
+    background: var(--text);
+    border-color: var(--text);
+    color: #fff !important;
+  }
+  .nav-cta-solid:hover {
+    background: #1f2430;
+    border-color: #1f2430;
+    color: #fff !important;
+  }
   @media (max-width: 640px) {
     .nav-links a:not(.nav-cta) {
       display: none;
+    }
+    .nav-links {
+      gap: 10px;
+    }
+    .nav-cta {
+      padding: 8px 14px;
     }
   }
 </style>
