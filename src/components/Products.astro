@@ -4,7 +4,7 @@ import Icon from "./Icon.astro";
 interface Product {
   name: string;
   url: string;
-  icon: "melody" | "shield" | "pos" | "mic" | "db";
+  icon: "melody" | "shield" | "pos" | "mic" | "db" | "relay" | "vault";
   badge?: { text: string; kind: "live" | "oss" | "plain" };
   desc: string;
   tags: string[];
@@ -28,6 +28,23 @@ const products: Product[] = [
     badge: { text: "Live", kind: "live" },
     desc: "Security-first AI integration — identity verification, secure document storage, and enterprise-grade password security.",
     tags: ["Security", "Identity", "AI"],
+  },
+  {
+    name: "Relay",
+    url: "https://relay.softmelody.dev/",
+    icon: "relay",
+    badge: { text: "Live", kind: "live" },
+    desc: "Share files safely — signed, expiring HTTPS links over a private bucket. Temporary uploads auto-expire, passwords hashed with argon2id, invite-only accounts.",
+    tags: ["File Sharing", "Security", "Web"],
+  },
+  {
+    name: "Creator Vault",
+    url: "https://cv.softmelody.dev/",
+    icon: "vault",
+    badge: { text: "Live", kind: "live" },
+    desc: "A home for creators — exclusive posts and paid memberships. Publish gated content, monetize your audience, and keep ownership of your community.",
+    tags: ["Creator Economy", "Memberships", "SaaS"],
+    wide: true,
   },
   {
     name: "OpenPOS",
