@@ -4,16 +4,10 @@
       <div class="sec-tag">Consultation</div>
       <h2 class="sec-title">Schedule a consultation.</h2>
       <p class="sec-sub">
-        Choose a time on the calendar, speak with our AI voice agent in your browser, or call to
-        book by phone.
+        Choose a time on the calendar, or speak with our AI voice agent right here in your browser.
       </p>
     </div>
-    <div class="phone-card reveal">
-      <a class="phone-booking" href="tel:+14159412580">
-        <span class="phone-label">Book with our AI voice agent</span>
-        <span class="phone-number">+1 (415) 941-2580</span>
-        <span class="phone-action">Call to book →</span>
-      </a>
+    <div class="agent-card reveal">
       <p class="agent-instruction">
         Prefer to talk here? Use the <strong>Talk to Melody</strong> button in the bottom-right corner
         to book directly from this page.
@@ -54,44 +48,16 @@
 </dialog>
 
 <style>
-  .phone-card {
+  .agent-card {
     margin-bottom: 24px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: var(--bg-2);
     overflow: hidden;
   }
-  .phone-booking {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    align-items: center;
-    gap: 24px;
-    padding: 22px 24px;
-    transition: background 0.2s;
-  }
-  .phone-booking:hover {
-    background: rgba(30, 58, 138, 0.04);
-  }
-  .phone-label {
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .phone-number {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    color: var(--muted);
-  }
-  .phone-action {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
   .agent-instruction {
     margin: 0;
     padding: 16px 24px;
-    border-top: 1px solid var(--line);
     color: var(--muted);
     font-size: 13px;
     line-height: 1.6;
@@ -246,10 +212,6 @@
     }
   }
   @media (max-width: 640px) {
-    .phone-booking {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
     .agent-launcher {
       right: 16px;
       bottom: 16px;
