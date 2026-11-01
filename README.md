@@ -41,7 +41,7 @@ Deploys to GitHub Pages via `.github/workflows/deploy.yml` on every push to `mai
 | Product | What it is |
 | --- | --- |
 | [Softmelody App](https://app.softmelody.dev/) | Voice AI services & workflows |
-| [Authia](https://authia.softmelody.dev/) | Security-first AI identity integration |
+| [ID](https://id.softmelody.dev/) | Private AI security workspace — agentic triage, threat modeling & detections |
 | [Relay](https://relay.softmelody.dev/) | Signed, expiring file-share links — signups are agent-only (AI agents follow `/agents.txt`) |
 | [Creator Vault](https://cv.softmelody.dev/) | Gated posts & paid memberships for creators |
 | [OpenPOS](https://www.openpos.xyz/) | Intelligent, offline-first POS |
