@@ -1,82 +1,177 @@
-<section id="about" style="padding-top:20px">
-  <div class="wrap">
-    <div class="about reveal">
-      <div>
-        <div class="about-name">Softmelody</div>
-        <div class="about-role">AI CONSULTANCY &amp; PRODUCT STUDIO</div>
-        <div class="about-loc">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          Remote-first, worldwide
-        </div>
+---
+import { products } from "../data/products";
+
+const names = products.map((p) => p.name).join(", ");
+
+const segments: { text: string; strong?: boolean }[] = [
+  { text: "An independent consultancy building production AI for" },
+  { text: "fintech, medtech, and communications.", strong: true },
+  {
+    text: `Every product on this page — ${names} — is designed, built, and maintained under Softmelody, and the same engineering standard goes into`,
+  },
+  { text: "your", strong: true },
+  { text: "engagement." },
+];
+const words = segments.flatMap((s) => s.text.split(" ").map((w) => ({ w, strong: !!s.strong })));
+---
+
+<section id="about">
+  <div class="wrap about">
+    <aside class="meta reveal">
+      <div class="sec-tag"><span class="led"></span>About <b>/ 03</b></div>
+      <div class="mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M4 16h3l2.5-8 4 16 3.5-12 2.5 6 2-4H28" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
       </div>
-      <p class="about-bio">
-        An independent consultancy building production AI for <strong
-          >fintech, medtech, and communications</strong
-        >. Every product on this page — Softmelody App, ID, Relay, Creator Vault, OpenPOS, Flow, XDB — is designed, built,
-        and maintained under Softmelody, and the same engineering standard goes into
-        <strong>your</strong> engagement.
-      </p>
-    </div>
+      <div class="name">Softmelody</div>
+      <div class="role">AI consultancy &amp; product studio</div>
+      <div class="loc">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        Remote-first, worldwide
+      </div>
+    </aside>
+
+    <p class="statement" id="statement">
+      {
+        words.map(({ w, strong }) => (
+          <Fragment>
+            <span class:list={["w", { strong }]}>{w}</span>{" "}
+          </Fragment>
+        ))
+      }
+    </p>
   </div>
 </section>
 
+<script>
+  /* Words light up as the statement is scrolled through, like lyrics following the music. */
+  const statement = document.getElementById("statement");
+  if (statement && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const words = [...statement.querySelectorAll<HTMLElement>(".w")];
+    statement.classList.add("dim");
+    let lit = -1;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const r = statement.getBoundingClientRect();
+      const start = innerHeight * 0.88;
+      const end = innerHeight * 0.42;
+      const p = (start - r.top) / (r.height + start - end);
+      const n = Math.round(Math.min(1, Math.max(0, p)) * words.length);
+      if (n === lit) return;
+      lit = n;
+      words.forEach((w, i) => w.classList.toggle("on", i < n));
+    };
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll, { passive: true });
+    update();
+  }
+</script>
+
 <style>
   .about {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 56px;
-    background: var(--bg-2);
     display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 48px;
-    align-items: center;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    gap: 72px;
+    align-items: start;
   }
-  .about-name {
-    font-family: var(--font-body);
-    font-size: 30px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+  .meta {
+    position: sticky;
+    top: calc(var(--nav-h) + 40px);
   }
-  .about-role {
-    font-family: var(--font-mono);
-    font-size: 13px;
+  .mark {
+    width: 84px;
+    height: 84px;
+    margin-top: 40px;
+    border-radius: 24px;
+    display: grid;
+    place-items: center;
     color: var(--accent);
-    margin-top: 8px;
-    letter-spacing: 0.06em;
+    border: 1px solid rgba(255, 182, 92, 0.25);
+    background: radial-gradient(circle at 50% 0%, rgba(255, 182, 92, 0.2), rgba(255, 182, 92, 0.03) 70%);
   }
-  .about-loc {
-    font-size: 13px;
-    color: var(--faint);
-    margin-top: 18px;
+  .mark svg {
+    width: 46px;
+    height: 46px;
+  }
+  .name {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: 34px;
+    font-weight: 360;
+    letter-spacing: -0.028em;
+    line-height: 1.1;
+    margin-top: 26px;
+  }
+  .role {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 10px;
+  }
+  .loc {
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-  .about-bio {
+    font-size: 14px;
     color: var(--muted);
-    font-size: 16px;
-    line-height: 1.75;
+    margin-top: 20px;
   }
-  .about-bio strong {
+
+  .statement {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: clamp(27px, 3.5vw, 50px);
+    font-weight: 320;
+    line-height: 1.16;
+    letter-spacing: -0.028em;
+    text-wrap: pretty;
+  }
+  .w {
+    transition: color 0.5s ease;
+  }
+  .w.strong {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .statement.dim .w {
+    color: rgba(243, 238, 230, 0.17);
+  }
+  .statement.dim .w.on {
     color: var(--text);
-    font-weight: 500;
   }
-  @media (max-width: 800px) {
+  .statement.dim .w.strong.on {
+    color: var(--accent);
+  }
+
+  @media (max-width: 900px) {
     .about {
       grid-template-columns: 1fr;
-      padding: 36px 28px;
+      gap: 48px;
+    }
+    .meta {
+      position: static;
+    }
+    .mark {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      margin-top: 28px;
+    }
+    .mark svg {
+      width: 34px;
+      height: 34px;
     }
   }
 </style>

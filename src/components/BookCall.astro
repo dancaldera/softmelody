@@ -1,18 +1,24 @@
-<section id="book" style="padding-top:20px">
+<section id="book">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Consultation</div>
-      <h2 class="sec-title">Schedule a consultation.</h2>
+      <div class="sec-tag"><span class="led"></span>Consultation <b>/ 04</b></div>
+      <h2 class="sec-title">Schedule a <em>consultation.</em></h2>
       <p class="sec-sub">
         Choose a time on the calendar, or speak with our AI voice agent right here in your browser.
       </p>
     </div>
+
     <div class="agent-card reveal">
-      <p class="agent-instruction">
-        Prefer to talk here? Use the <strong>Talk to Melody</strong> button in the bottom-right corner
-        to book directly from this page.
+      <span class="agent-wave" aria-hidden="true">
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => <i style={`--i:${i}`} />)}
+      </span>
+      <p>
+        <strong>Prefer to talk?</strong> Melody, our voice agent, can book it for you — without leaving
+        this page.
       </p>
+      <button class="btn btn-ghost" type="button" data-open-agent>Talk to Melody</button>
     </div>
+
     <div class="cal-shell reveal">
       <span class="cal-loading">Loading availability…</span>
       <div id="cal-embed"></div>
@@ -23,6 +29,7 @@
 <button
   class="agent-launcher"
   type="button"
+  data-open-agent
   aria-haspopup="dialog"
   aria-controls="agent-dialog"
   aria-expanded="false"
@@ -34,47 +41,98 @@
 <dialog class="agent-dialog" id="agent-dialog" aria-labelledby="agent-dialog-title">
   <div class="agent-dialog-head">
     <div>
-      <div class="sec-tag">Voice agent</div>
+      <div class="sec-tag"><span class="led live"></span>Voice agent</div>
       <h2 id="agent-dialog-title">Book with Melody</h2>
     </div>
     <button class="agent-close" type="button" aria-label="Close voice agent">×</button>
   </div>
   <iframe
     class="agent-embed"
-    src="https://app.softmelody.dev/embed/agents/99ea43c5-9498-45fd-af9e-db7d32050eab"
+    data-src="https://app.softmelody.dev/embed/agents/99ea43c5-9498-45fd-af9e-db7d32050eab"
     title="Melody voice agent"
-    allow="microphone; autoplay"
-  ></iframe>
+    allow="microphone; autoplay"></iframe>
 </dialog>
 
 <style>
   .agent-card {
-    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 16px 16px 16px 24px;
     border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--bg-2);
-    overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(243, 238, 230, 0.02);
   }
-  .agent-instruction {
-    margin: 0;
-    padding: 16px 24px;
+  .agent-card p {
+    flex: 1;
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.55;
   }
-  .agent-instruction strong {
+  .agent-card strong {
     color: var(--text);
-    font-weight: 600;
+    font-weight: 500;
   }
+  .agent-card .btn {
+    padding: 13px 22px;
+    font-size: 14px;
+  }
+  .agent-wave {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  .agent-wave i {
+    width: 3px;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    animation: talk 1s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -0.21s);
+  }
+  @keyframes talk {
+    from {
+      transform: scaleY(0.2);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
   .cal-shell {
     position: relative;
     width: 100%;
-    height: 680px;
+    height: 700px;
     border: 1px solid var(--line);
-    border-radius: 16px;
-    background: var(--bg-2);
+    border-radius: 24px;
+    background:
+      radial-gradient(70% 60% at 50% 0%, rgba(255, 182, 92, 0.06), transparent 70%),
+      var(--bg-2);
     overflow: hidden;
   }
+  .cal-loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  #cal-embed {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: auto;
+  }
+
+  /* ---------- floating launcher ---------- */
   .agent-launcher {
     position: fixed;
     right: 24px;
@@ -82,20 +140,31 @@
     z-index: 45;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 18px;
+    gap: 11px;
+    padding: 15px 22px 15px 18px;
     border: 0;
     border-radius: 999px;
-    background: var(--text);
-    color: var(--bg);
-    box-shadow: 0 12px 32px rgba(11, 11, 15, 0.22);
+    background: var(--accent);
+    color: var(--accent-ink);
+    box-shadow:
+      0 14px 40px -10px rgba(255, 182, 92, 0.55),
+      0 4px 14px rgba(0, 0, 0, 0.4);
     font: 600 14px var(--font-body);
     cursor: pointer;
     overflow: hidden;
     isolation: isolate;
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    pointer-events: none;
     transition:
-      transform 0.2s,
-      box-shadow 0.2s;
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease),
+      box-shadow 0.3s ease;
+  }
+  .agent-launcher.show:not(.tuck) {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
   }
   .agent-launcher::before {
     position: absolute;
@@ -104,26 +173,45 @@
     background: linear-gradient(
       110deg,
       transparent 20%,
-      rgba(255, 255, 255, 0.08) 38%,
-      rgba(255, 255, 255, 0.42) 50%,
-      rgba(255, 255, 255, 0.08) 62%,
+      rgba(255, 255, 255, 0.12) 38%,
+      rgba(255, 255, 255, 0.6) 50%,
+      rgba(255, 255, 255, 0.12) 62%,
       transparent 80%
     );
     content: "";
     transform: translateX(-130%);
     animation: agent-shimmer 3.2s ease-in-out infinite;
   }
-  .agent-launcher:hover {
-    background: #1f2430;
-    transform: translateY(-2px);
-    box-shadow: 0 16px 36px rgba(11, 11, 15, 0.28);
+  .agent-launcher.show:not(.tuck):hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 20px 50px -10px rgba(255, 182, 92, 0.7),
+      0 4px 14px rgba(0, 0, 0, 0.4);
   }
   .agent-pulse {
+    position: relative;
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.16);
+    background: var(--accent-ink);
+  }
+  .agent-pulse::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent-ink);
+    animation: ping 2s ease-out infinite;
+  }
+  @keyframes ping {
+    from {
+      transform: scale(0.5);
+      opacity: 0.8;
+    }
+    to {
+      transform: scale(1.5);
+      opacity: 0;
+    }
   }
   @keyframes agent-shimmer {
     0%,
@@ -134,27 +222,39 @@
       transform: translateX(130%);
     }
   }
+
+  /* ---------- voice agent dialog ---------- */
   .agent-dialog {
     position: fixed;
-    inset: auto 24px 88px auto;
+    inset: auto 24px 92px auto;
     width: min(440px, calc(100vw - 32px));
     max-width: none;
-    height: min(720px, calc(100dvh - 112px));
+    height: min(720px, calc(100dvh - 116px));
     max-height: none;
     margin: 0;
     padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    background: var(--bg);
-    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
+    border: 1px solid var(--line-2);
+    border-radius: 22px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7);
     overflow: hidden;
   }
   .agent-dialog::backdrop {
-    background: rgba(15, 23, 42, 0.12);
+    background: rgba(5, 4, 3, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
   .agent-dialog[open] {
     display: grid;
     grid-template-rows: auto 1fr;
+    animation: dialog-in 0.4s var(--ease);
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+    }
   }
   .agent-dialog-head {
     display: flex;
@@ -165,22 +265,33 @@
     border-bottom: 1px solid var(--line);
   }
   .agent-dialog-head h2 {
-    margin: 6px 0 0;
-    font-size: 20px;
-    letter-spacing: -0.02em;
+    margin: 8px 0 0;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: 26px;
+    font-weight: 360;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
   }
   .agent-close {
     display: grid;
     width: 38px;
     height: 38px;
     place-items: center;
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-2);
     border-radius: 50%;
-    background: var(--bg-2);
+    background: transparent;
     color: var(--text);
-    font-size: 25px;
+    font-size: 24px;
     line-height: 1;
     cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+  .agent-close:hover {
+    background: var(--text);
+    color: var(--ink);
   }
   .agent-embed {
     display: block;
@@ -188,42 +299,42 @@
     height: 100%;
     min-height: 0;
     border: 0;
+    background: #fff;
   }
-  .cal-loading {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--faint);
-  }
-  #cal-embed {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
+
   @media (prefers-reduced-motion: reduce) {
-    .agent-launcher::before {
+    .agent-launcher::before,
+    .agent-pulse::after,
+    .agent-wave i {
       animation: none;
     }
   }
   @media (max-width: 640px) {
+    .agent-card {
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+    .agent-card p {
+      flex-basis: calc(100% - 60px);
+    }
+    .agent-card .btn {
+      width: 100%;
+    }
     .agent-launcher {
-      right: 16px;
-      bottom: 16px;
+      right: 14px;
+      bottom: 14px;
+      padding: 13px 18px 13px 15px;
+      font-size: 13px;
     }
     .agent-dialog {
       inset: 8px;
       width: auto;
       height: auto;
-      border-radius: 14px;
+      border-radius: 18px;
     }
     .cal-shell {
-      height: 720px;
+      height: 740px;
+      border-radius: 18px;
     }
   }
 </style>
@@ -268,20 +379,38 @@
   w.Cal("init", "book", { origin: "https://app.cal.com" });
   w.Cal.ns.book("inline", {
     elementOrSelector: "#cal-embed",
-    config: { layout: "month_view" },
+    config: { layout: "month_view", theme: "dark" },
     calLink: CAL_LINK,
   });
   w.Cal.ns.book("ui", {
-    theme: "light",
+    theme: "dark",
     layout: "month_view",
-    cssVarsPerTheme: { light: { "cal-brand": "#1e3a8a" } },
+    cssVarsPerTheme: {
+      light: { "cal-brand": "#15120e" },
+      dark: { "cal-brand": "#ffb65c" },
+    },
   });
 
   const agentDialog = document.querySelector<HTMLDialogElement>("#agent-dialog");
+  const agentFrame = agentDialog?.querySelector<HTMLIFrameElement>(".agent-embed");
   const agentLauncher = document.querySelector<HTMLButtonElement>(".agent-launcher");
   const agentClose = document.querySelector<HTMLButtonElement>(".agent-close");
 
-  agentLauncher?.addEventListener("click", () => agentDialog?.showModal());
+  /* The agent loads on first intent (hover, focus, touch) instead of with the page, so it is ready by the click. */
+  const loadAgent = () => {
+    if (agentFrame && !agentFrame.src && agentFrame.dataset.src) {
+      agentFrame.src = agentFrame.dataset.src;
+    }
+  };
+  document.querySelectorAll("[data-open-agent]").forEach((el) => {
+    for (const type of ["pointerenter", "focus", "touchstart"]) {
+      el.addEventListener(type, loadAgent, { once: true, passive: true });
+    }
+    el.addEventListener("click", () => {
+      loadAgent();
+      agentDialog?.showModal();
+    });
+  });
   agentClose?.addEventListener("click", () => agentDialog?.close());
   agentDialog?.addEventListener("click", (event) => {
     if (event.target === agentDialog) agentDialog.close();
@@ -289,4 +418,22 @@
   agentDialog?.addEventListener("toggle", () => {
     agentLauncher?.setAttribute("aria-expanded", String(agentDialog.open));
   });
+
+  /* Keep the hero clean: the launcher slides in once the visitor starts scrolling. */
+  const showLauncher = () => agentLauncher?.classList.toggle("show", scrollY > innerHeight * 0.5);
+  addEventListener("scroll", showLauncher, { passive: true });
+  showLauncher();
+
+  /* On phones the launcher would sit on top of the contact form, so it tucks away there. */
+  const form = document.getElementById("contact-form");
+  if (form && agentLauncher) {
+    new IntersectionObserver(
+      ([entry]) =>
+        agentLauncher.classList.toggle(
+          "tuck",
+          !!entry?.isIntersecting && matchMedia("(max-width: 760px)").matches,
+        ),
+      { rootMargin: "0px 0px -10% 0px" },
+    ).observe(form);
+  }
 </script>

@@ -1,438 +1,541 @@
----
-const amps = [
-  0.3, 0.45, 0.6, 0.8, 1, 0.85, 0.6, 0.4, 0.35, 0.5, 0.7, 0.9, 0.75, 0.55, 0.4,
-  0.3, 0.35, 0.5, 0.7, 0.95, 0.8, 0.6, 0.45, 0.3, 0.4, 0.6, 0.85, 1, 0.7, 0.5,
-  0.35, 0.3,
-];
+<section class="hero" id="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
 
----
-
-<section class="hero">
-  <div class="hero-dots" aria-hidden="true"></div>
   <div class="wrap hero-inner">
-    <div class="hero-copy">
-      <div class="eyebrow rise" style="--d:.05s">
-        <span class="dot"></span>Softmelody · AI Consultancy &amp; Products
-      </div>
-      <h1 class="rise" style="--d:.15s">
-        Enterprise-grade AI,<br />
-        <span class="h1-muted">engineered to ship.</span>
-      </h1>
-      <p class="hero-sub rise" style="--d:.3s">
-        Softmelody is an independent AI consultancy — designing and building production AI
-        systems for fintech, medtech, and communications. From voice agents to identity
-        infrastructure: strategy through shipped product.
+    <div class="eyebrow rise" style="--d:.05s">
+      <span class="led"></span>Softmelody · AI Consultancy &amp; Products
+    </div>
+
+    <h1 class="display">
+      <span class="line"><span class="line-in" style="--d:.12s">Enterprise-grade AI,</span></span>
+      <span class="line"
+        ><span class="line-in" style="--d:.24s"
+          ><i
+            >engineered to <span class="ship"
+              >ship.<svg viewBox="0 0 220 32" aria-hidden="true"
+                ><path pathLength="1" d="M2 20H50l9-14 12 24 12-28 12 26 10-14 9 6H218"></path></svg
+              ></span
+            ></i
+          ></span
+        ></span
+      >
+    </h1>
+
+    <div class="hero-row">
+      <p class="hero-sub rise" style="--d:.5s">
+        Softmelody is an independent AI consultancy — designing and building production AI systems
+        for fintech, medtech, and communications. From voice agents to identity infrastructure:
+        strategy through shipped product.
       </p>
-      <div class="hero-ctas rise" style="--d:.45s">
-        <a
-          class="btn btn-primary"
-          href="https://app.softmelody.dev"
-          target="_blank"
-          rel="noopener"
-        >
+      <div class="hero-ctas rise" style="--d:.62s">
+        <a class="btn btn-primary" href="https://app.softmelody.dev" target="_blank" rel="noopener">
           Go to app
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6"></path>
           </svg>
         </a>
-        <a class="btn btn-ghost" href="mailto:d@softmelody.dev?subject=Project%20inquiry%20—%20Softmelody">Start a project</a>
-        <a class="btn btn-ghost" href="#products">Explore the products</a>
+        <a class="btn btn-ghost" href="mailto:d@softmelody.dev?subject=Project%20inquiry%20—%20Softmelody">
+          Start a project
+        </a>
+        <a class="link-arrow" href="#products">Explore the products <span aria-hidden="true">↓</span></a>
       </div>
     </div>
-    <div class="hero-visual rise" style="--d:.35s" aria-hidden="true">
-      <div class="panel">
-        <div class="panel-head">
-          <span class="panel-title"><span class="dot"></span>Melody · live call</span>
-          <span id="call-timer">00:00</span>
-        </div>
-        <div class="wave">
-          {
-            amps.map((a, i) => (
-              <span class="bar" style={`--i:${i};--amp:${a}`}></span>
-            ))
-          }
-        </div>
-        <div class="transcript">
-          <div class="line">
-            <span class="speaker">CALLER</span>
-            <span class="caller-text"><span id="t-caller"></span></span>
-          </div>
-          <div class="line">
-            <span class="speaker agent">MELODY</span>
-            <span class="agent-text"><span id="t-agent"></span><span class="caret"></span></span>
-          </div>
-        </div>
-        <div class="pipeline">
-          <span class="rail"></span>
-          <span class="pulse"></span>
-          <div class="node"><span class="node-dot" style="--nd:0.1s"></span>Transcribe</div>
-          <div class="node"><span class="node-dot" style="--nd:1.3s"></span>Reason</div>
-          <div class="node"><span class="node-dot" style="--nd:2.5s"></span>Act</div>
-        </div>
-        <div class="panel-foot">
-          <span>latency <b>380 ms</b></span>
-          <span>confidence <b>98%</b></span>
-          <span>sentiment <b>positive</b></span>
-        </div>
-      </div>
-    </div>
+  </div>
+
+  <div class="strings rise" style="--d:.8s" id="strings" aria-hidden="true">
+    <canvas id="strings-canvas"></canvas>
+  </div>
+
+  <div class="wrap strings-meta rise" style="--d:1s">
+    <span class="hint">
+      <span class="hint-fine">Sweep your cursor across the strings — or just scroll past them</span>
+      <span class="hint-coarse">Tap a string</span>
+    </span>
+    <button class="hint-sound" type="button" data-sound-toggle aria-pressed="false">
+      <span class="knob" aria-hidden="true"></span>
+      <span data-sound-label>Sound off</span>
+    </button>
   </div>
 </section>
 
 <script>
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  import { STRING_NOTES, pluck as playNote } from "../scripts/sound";
 
-  /* ---------- call timer ---------- */
-  const timerEl = document.getElementById("call-timer");
-  if (timerEl && !reduced) {
-    let secs = 0;
-    const fmt = (s: number) =>
-      `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-    setInterval(() => {
-      secs = (secs + 1) % 600;
-      timerEl.textContent = fmt(secs);
-    }, 1000);
-  }
+  const canvas = document.getElementById("strings-canvas") as HTMLCanvasElement | null;
+  const band = document.getElementById("strings");
 
-  /* ---------- transcript typewriter ---------- */
-  const exchanges = [
-    ["Hi, I need to move my appointment to Thursday.", "Done — Thursday at 10:30 AM. Confirmation sent by SMS."],
-    ["Can you verify it's really me first?", "Identity confirmed. Your record is unlocked."],
-    ["What's the balance on my last invoice?", "$1,240.00, due on the 28th. Want a payment link?"],
-  ];
-  const tCaller = document.getElementById("t-caller");
-  const tAgent = document.getElementById("t-agent");
-  const caret = document.querySelector<HTMLElement>(".caret");
-  if (tCaller && tAgent) {
-    if (reduced) {
-      tCaller.textContent = exchanges[0]![0];
-      tAgent.textContent = exchanges[0]![1];
-      if (caret) caret.style.display = "none";
-    } else {
-      let idx = 0;
-      const typeInto = (el: HTMLElement, text: string, ms: number, done: () => void) => {
-        let i = 0;
-        const step = () => {
-          el.textContent = text.slice(0, ++i);
-          if (i < text.length) setTimeout(step, ms);
-          else done();
-        };
-        step();
-      };
-      const run = () => {
-        const [caller, agent] = exchanges[idx]!;
-        caret?.classList.remove("on");
-        typeInto(tCaller, caller, 28, () => {
-          setTimeout(() => {
-            caret?.classList.add("on");
-            typeInto(tAgent, agent, 22, () => {
-              setTimeout(() => {
-                caret?.classList.remove("on");
-                tCaller.textContent = "";
-                tAgent.textContent = "";
-                idx = (idx + 1) % exchanges.length;
-                run();
-              }, 2600);
-            });
-          }, 500);
-        });
-      };
-      run();
+  if (canvas && band) {
+    const ctx = canvas.getContext("2d")!;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const N = STRING_NOTES.length;
+    const MODES = 16;
+    const POINTS = 220;
+    /* Strings are anchored a little past each edge, so they never look pinned to the viewport. */
+    const OVERHANG = 0.05;
+    const span = (p: number) => OVERHANG + p * (1 - 2 * OVERHANG);
+
+    /* sin(nπu) for every mode at every sample point — the standing-wave shapes. */
+    const shapes: Float32Array[] = [];
+    for (let n = 1; n <= MODES; n++) {
+      const row = new Float32Array(POINTS + 1);
+      for (let j = 0; j <= POINTS; j++) row[j] = Math.sin(n * Math.PI * span(j / POINTS));
+      shapes.push(row);
     }
+
+    interface Pluck {
+      t0: number;
+      amp: number;
+      k: Float32Array;
+    }
+    const strings = Array.from({ length: N }, () => ({ plucks: [] as Pluck[], lastNote: 0 }));
+    const coef = new Float32Array(MODES);
+
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let pad = 0;
+    let gap = 0;
+    let labelX = 24;
+    /* String 0 is the lowest note and sits on the bottom line, like a staff. */
+    const yOf = (i: number) => H - pad - i * gap;
+
+    /**
+     * Pluck string `i` at `pos` (0–1 across the screen) by `amp` px.
+     * A plucked string starts as a triangle; these are that triangle's Fourier
+     * coefficients, so the modes sum back into a kink that travels and decays.
+     */
+    function hit(i: number, pos: number, amp: number, loudness = 1) {
+      const s = strings[i]!;
+      const now = performance.now();
+      if (now - s.lastNote > 70) {
+        playNote(STRING_NOTES[i]!.freq, Math.min(1, Math.abs(amp) / 44) * loudness);
+        s.lastNote = now;
+      }
+      if (reduced) return;
+      const u = span(Math.min(0.95, Math.max(0.05, pos)));
+      const k = new Float32Array(MODES);
+      for (let n = 1; n <= MODES; n++) {
+        k[n - 1] = (2 / (n * n * Math.PI * Math.PI * u * (1 - u))) * Math.sin(n * Math.PI * u);
+      }
+      s.plucks.push({ t0: now, amp, k });
+      if (s.plucks.length > 5) s.plucks.shift();
+    }
+
+    function draw(now: number) {
+      const t = now / 1000;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.lineJoin = "round";
+      ctx.font = "500 10px 'Geist Mono', ui-monospace, monospace";
+      ctx.textBaseline = "alphabetic";
+
+      for (let i = 0; i < N; i++) {
+        const s = strings[i]!;
+        coef.fill(0);
+        let energy = 0;
+        const w0 = 2 * Math.PI * (3.1 + i * 0.32);
+        for (let e = s.plucks.length - 1; e >= 0; e--) {
+          const p = s.plucks[e]!;
+          const tau = (now - p.t0) / 1000;
+          if (tau > 4.5) {
+            s.plucks.splice(e, 1);
+            continue;
+          }
+          const attack = Math.min(1, tau / 0.035);
+          energy += Math.abs(p.amp) * Math.exp(-1.25 * tau) * attack;
+          for (let n = 1; n <= MODES; n++) {
+            coef[n - 1] +=
+              p.amp * attack * p.k[n - 1]! * Math.cos(n * w0 * tau) * Math.exp(-(0.7 + 0.5 * n) * tau);
+          }
+        }
+
+        const y0 = yOf(i);
+        ctx.beginPath();
+        for (let j = 0; j <= POINTS; j++) {
+          const u = j / POINTS;
+          let y = 0;
+          for (let n = 0; n < MODES; n++) y += coef[n]! * shapes[n]![j]!;
+          if (!reduced) {
+            /* Idle breathing, so the strings are never perfectly still. */
+            y +=
+              (2.1 * Math.sin(2 * Math.PI * (u * 1.25 - t * 0.07) + i * 0.9) +
+                1.1 * Math.sin(2 * Math.PI * (u * 2.6 + t * 0.045) + i * 1.7)) *
+              shapes[0]![j]!;
+          }
+          if (j === 0) ctx.moveTo(u * W, y0 + y);
+          else ctx.lineTo(u * W, y0 + y);
+        }
+
+        const glow = Math.min(1, energy / 26);
+        const weight = 1.55 - i * 0.14;
+        if (glow > 0.01) {
+          ctx.strokeStyle = `rgba(255, 182, 92, ${glow * 0.1})`;
+          ctx.lineWidth = 12;
+          ctx.stroke();
+          ctx.strokeStyle = `rgba(255, 182, 92, ${glow * 0.22})`;
+          ctx.lineWidth = 5;
+          ctx.stroke();
+        }
+        ctx.strokeStyle = `rgba(243, 238, 230, ${0.26 - glow * 0.1})`;
+        ctx.lineWidth = weight;
+        ctx.stroke();
+        if (glow > 0.01) {
+          ctx.strokeStyle = `rgba(255, 200, 130, ${Math.min(1, glow * 1.3)})`;
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = glow > 0.05 ? `rgba(255, 182, 92, ${0.5 + glow * 0.5})` : "rgba(127, 121, 110, 0.9)";
+        ctx.fillText(STRING_NOTES[i]!.name, labelX, y0 - 9);
+      }
+    }
+
+    function resize() {
+      const r = band!.getBoundingClientRect();
+      W = r.width;
+      H = r.height;
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas!.width = Math.round(W * dpr);
+      canvas!.height = Math.round(H * dpr);
+      pad = H * 0.19;
+      gap = (H - pad * 2) / (N - 1);
+      labelX = Math.max(20, (W - Math.min(1240, W - 48)) / 2);
+      draw(performance.now());
+    }
+    new ResizeObserver(resize).observe(band);
+    document.fonts?.ready.then(() => draw(performance.now()));
+
+    /* ---------- render loop: only while the strings are on screen ---------- */
+    let visible = false;
+    let raf = 0;
+    const frame = (now: number) => {
+      draw(now);
+      raf = visible ? requestAnimationFrame(frame) : 0;
+    };
+
+    /* ---------- pointer: crossing a string plucks it ---------- */
+    let px = 0;
+    let py = 0;
+    let hasPointer = false;
+    let lastY: number | null = null;
+    let lastTouch = 0;
+
+    function cross() {
+      const r = canvas!.getBoundingClientRect();
+      const x = px - r.left;
+      const y = py - r.top;
+      if (lastY !== null && x >= 0 && x <= W) {
+        for (let i = 0; i < N; i++) {
+          const sy = yOf(i);
+          if ((lastY - sy) * (y - sy) < 0) {
+            const dy = y - lastY;
+            hit(i, x / W, Math.sign(dy) * Math.min(44, 14 + Math.abs(dy) * 0.6));
+            lastTouch = performance.now();
+          }
+        }
+      }
+      lastY = y;
+    }
+
+    addEventListener(
+      "pointermove",
+      (e) => {
+        if (e.pointerType === "touch") return;
+        px = e.clientX;
+        py = e.clientY;
+        hasPointer = true;
+        if (visible) cross();
+      },
+      { passive: true },
+    );
+    /* Scrolling drags the strings under a resting cursor — that strums them too. */
+    addEventListener(
+      "scroll",
+      () => {
+        if (visible && hasPointer) cross();
+      },
+      { passive: true },
+    );
+    band.addEventListener("pointerdown", (e) => {
+      const r = canvas.getBoundingClientRect();
+      const y = e.clientY - r.top;
+      let nearest = 0;
+      for (let i = 1; i < N; i++) {
+        if (Math.abs(yOf(i) - y) < Math.abs(yOf(nearest) - y)) nearest = i;
+      }
+      hit(nearest, (e.clientX - r.left) / W, y < yOf(nearest) ? 30 : -30);
+      lastTouch = performance.now();
+    });
+
+    /* ---------- a quiet phrase that plays itself while nobody is touching ---------- */
+    const phrase = [0, 2, 4, 3, 1, 2, 4, 2, 0, 1, 3, 2];
+    let step = 0;
+    setInterval(() => {
+      if (!visible || reduced || document.hidden) return;
+      if (performance.now() - lastTouch < 3200) return;
+      const i = phrase[step % phrase.length]!;
+      hit(i, 0.22 + ((step * 0.37) % 0.56), step % 2 ? 16 : -16, 0.6);
+      step++;
+    }, 1500);
+
+    new IntersectionObserver(([entry]) => {
+      visible = !!entry?.isIntersecting;
+      if (!visible) lastY = null;
+      if (visible && !raf && !reduced) raf = requestAnimationFrame(frame);
+    }).observe(band);
   }
 </script>
 
 <style>
   .hero {
     min-height: 100svh;
+    padding: calc(var(--nav-h) + clamp(28px, 6vh, 72px)) 0 0;
     display: flex;
-    align-items: center;
-    padding: calc(var(--nav-h) + 60px) 0 80px;
+    flex-direction: column;
+    overflow: hidden;
   }
-  .hero-dots {
+  .hero-glow {
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: radial-gradient(var(--line) 1px, transparent 1px);
-    background-size: 24px 24px;
-    mask-image: radial-gradient(ellipse 90% 70% at 50% 35%, black 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 35%, black 30%, transparent 75%);
+    background:
+      radial-gradient(52% 46% at 22% 30%, rgba(255, 182, 92, 0.13), transparent 70%),
+      radial-gradient(40% 40% at 88% 12%, rgba(255, 122, 82, 0.07), transparent 70%),
+      radial-gradient(60% 40% at 50% 100%, rgba(255, 182, 92, 0.06), transparent 70%);
   }
   .hero-inner {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 64px;
-    align-items: center;
   }
+
   .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-family: var(--font-mono);
     font-size: 12px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
-    padding: 7px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-  }
-  .eyebrow .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
   }
 
   h1 {
-    font-family: var(--font-body);
-    font-size: clamp(36px, 5vw, 56px);
-    font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    margin: 26px 0 0;
-    max-width: 14ch;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    /* Sized against both axes, so the strings below always make the first screen. */
+    font-size: clamp(46px, min(10vw, 16.5vh), 150px);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.038em;
+    margin-top: clamp(18px, 3vh, 36px);
   }
-  .h1-muted {
-    color: var(--muted);
+  /* Each line slides up from behind its own mask. */
+  .line {
+    display: block;
+    overflow: hidden;
+    padding: 0.04em 0.06em 0.3em;
+    margin: -0.04em -0.06em -0.26em;
+  }
+  .line-in {
+    display: block;
+    transform: translateY(112%);
+    animation: line-up 1.1s var(--ease) forwards;
+    animation-delay: var(--d, 0s);
+  }
+  @keyframes line-up {
+    to {
+      transform: none;
+    }
+  }
+  h1 i {
+    font-style: italic;
+    font-weight: 300;
+  }
+  .ship {
+    position: relative;
+    display: inline-block;
+    color: var(--accent);
+  }
+  .ship svg {
+    position: absolute;
+    left: -3%;
+    bottom: -0.24em;
+    width: 106%;
+    height: auto;
+    overflow: visible;
+  }
+  .ship path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.2s var(--ease) 1.05s forwards;
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
   }
 
+  .hero-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 40px 64px;
+    margin-top: clamp(26px, 4.4vh, 52px);
+  }
   .hero-sub {
-    max-width: 560px;
-    margin-top: 26px;
-    font-size: 18px;
+    max-width: 54ch;
+    font-size: clamp(16.5px, 1.35vw, 19px);
     color: var(--muted);
     line-height: 1.65;
+    text-wrap: pretty;
   }
-  .hero-sub strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
   .hero-ctas {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 40px;
+    align-items: center;
+    gap: 14px 16px;
+  }
+  .hero-ctas .link-arrow {
+    margin-left: 10px;
   }
 
-  /* ---------- live call panel ---------- */
-  .hero-visual {
+  /* ---------- the strings ---------- */
+  .strings {
     position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    min-height: clamp(170px, 22vh, 300px);
+    margin-top: clamp(20px, 3.5vh, 48px);
+    cursor: crosshair;
+    touch-action: pan-y;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
   }
-  .panel {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 22px 24px;
-    box-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.04),
-      0 12px 32px -16px rgba(11, 11, 15, 0.12);
-    font-family: var(--font-mono);
+  .strings canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
-  .panel-head {
+
+  .strings-meta {
+    position: relative;
+    z-index: 1;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    font-size: 11.5px;
-    text-transform: uppercase;
+    gap: 16px;
+    padding-bottom: 28px;
+    font-family: var(--font-mono);
+    font-size: 11px;
     letter-spacing: 0.12em;
-    color: var(--muted);
+    text-transform: uppercase;
+    color: var(--faint);
   }
-  .panel-title {
+  .hint-coarse {
+    display: none;
+  }
+  .hint-sound {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-  }
-  .panel-title .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-
-  .wave {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    height: 56px;
-    margin: 18px 0;
-  }
-  .bar {
-    width: 3px;
-    border-radius: 2px;
-    background: var(--text);
-    height: 100%;
-    transform: scaleY(var(--s, 0.2));
-    transform-origin: center;
-    animation: wave 1.6s ease-in-out infinite alternate;
-    animation-delay: calc(var(--i) * -0.09s);
-  }
-  @keyframes wave {
-    from {
-      transform: scaleY(0.12);
-      opacity: 0.35;
-    }
-    to {
-      transform: scaleY(var(--amp));
-      opacity: 0.9;
-    }
-  }
-
-  .line {
-    display: flex;
     gap: 10px;
-    font-size: 12.5px;
-    line-height: 1.5;
-    min-height: 3.2em;
-  }
-  .line + .line {
-    margin-top: 10px;
-  }
-  .speaker {
-    color: var(--faint);
-    width: 56px;
-    flex-shrink: 0;
-    font-size: 10.5px;
-    letter-spacing: 0.1em;
-    padding-top: 2px;
-  }
-  .speaker.agent {
-    color: var(--accent);
-  }
-  .caller-text {
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
     color: var(--muted);
+    cursor: pointer;
+    transition: color 0.25s ease;
   }
-  .agent-text {
+  .hint-sound:hover {
     color: var(--text);
   }
-  .caret {
-    display: none;
-    width: 1px;
-    height: 1em;
-    background: var(--text);
-    margin-left: 2px;
-    vertical-align: -2px;
-    animation: blink 1s steps(1) infinite;
+  .hint-sound[aria-pressed="true"] {
+    color: var(--accent);
   }
-  .caret.on {
-    display: inline-block;
-  }
-  @keyframes blink {
-    50% {
-      opacity: 0;
-    }
-  }
-
-  .pipeline {
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid var(--line);
+  /* A tiny toggle, like the power switch on an amp. */
+  .knob {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-  }
-  .rail {
-    position: absolute;
-    top: calc(16px + 4px);
-    left: 16.66%;
-    right: 16.66%;
-    height: 1px;
-    background: var(--line);
-  }
-  .node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--faint);
-  }
-  .node-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    width: 30px;
+    height: 16px;
+    border-radius: 999px;
     border: 1px solid var(--line-2);
-    background: var(--surface);
-    animation: light 3.6s infinite;
-    animation-delay: var(--nd, 0s);
+    transition: border-color 0.25s ease;
   }
-  @keyframes light {
-    0%,
-    100% {
-      border-color: var(--line-2);
-      background: var(--surface);
-    }
-    8%,
-    22% {
-      border-color: var(--text);
-      background: var(--text);
-    }
-  }
-  .pulse {
+  .knob::after {
+    content: "";
     position: absolute;
-    top: calc(16px + 4px - 3px);
-    left: 16.66%;
-    width: 6px;
-    height: 6px;
+    top: 2px;
+    left: 2px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
+    background: var(--muted);
+    transition:
+      transform 0.3s var(--ease),
+      background 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .hint-sound[aria-pressed="true"] .knob {
+    border-color: rgba(255, 182, 92, 0.5);
+  }
+  .hint-sound[aria-pressed="true"] .knob::after {
+    transform: translateX(14px);
     background: var(--accent);
-    transform: translateX(-50%);
-    animation: travel 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-  }
-  @keyframes travel {
-    0% {
-      left: 16.66%;
-      opacity: 0;
-    }
-    6% {
-      opacity: 1;
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      left: 83.33%;
-      opacity: 0;
-    }
+    box-shadow: 0 0 10px var(--accent);
   }
 
-  .panel-foot {
-    margin-top: 16px;
-    display: flex;
-    gap: 18px;
-    font-size: 11px;
-    color: var(--faint);
+  @media (hover: none) {
+    .hint-fine {
+      display: none;
+    }
+    .hint-coarse {
+      display: inline;
+    }
   }
-  .panel-foot b {
-    font-weight: 500;
-    color: var(--muted);
-  }
-
-  @media (max-width: 960px) {
-    .hero-inner {
+  @media (max-width: 1100px) {
+    .hero-row {
       grid-template-columns: 1fr;
-      gap: 40px;
+      align-items: start;
     }
-    .hero-visual {
-      max-width: 520px;
+  }
+  @media (max-width: 560px) {
+    .hero {
+      padding-top: calc(var(--nav-h) + 20px);
+    }
+    .eyebrow {
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      gap: 10px;
+    }
+    .hero-ctas .btn {
+      flex: 1 1 auto;
+    }
+    .hero-ctas .link-arrow {
+      display: none;
+    }
+    .hint {
+      font-size: 10px;
+    }
+    .strings {
+      -webkit-mask-image: none;
+      mask-image: none;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .bar {
+    .line-in {
+      transform: none;
       animation: none;
-      transform: scaleY(var(--amp));
-      opacity: 0.7;
     }
-    .pulse,
-    .caret {
-      display: none;
-    }
-    .node-dot {
+    .ship path {
+      stroke-dashoffset: 0;
       animation: none;
     }
   }

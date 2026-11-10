@@ -21,77 +21,292 @@ const services = [
     desc: "Pragmatic roadmaps: where AI genuinely pays off in your product, then building it.",
   },
 ];
+
+/* The arc of an engagement, in the words the page already uses. */
+const chain = ["Strategy", "Architecture", "Build", "Production"];
 ---
 
-<section id="services" style="padding-top:20px">
+<section id="services">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-tag">Consulting</div>
-      <h2 class="sec-title">What Softmelody builds for you.</h2>
+      <div class="sec-tag"><span class="led"></span>Consulting <b>/ 02</b></div>
+      <h2 class="sec-title">What Softmelody <em>builds for you.</em></h2>
       <p class="sec-sub">
         Senior, hands-on engagements — from first architecture sketch to production deployment.
       </p>
     </div>
-    <div class="svc-grid">
+
+    <ul class="rows">
       {
         services.map((s, i) => (
-          <div class="svc reveal" style={`--d:${i * 0.07}s`}>
-            <div class="svc-num">{s.num}</div>
-            <h3>{s.title}</h3>
-            <p>{s.desc}</p>
-          </div>
+          <li class="reveal" style={`--d:${i * 0.06}s`}>
+            <a class="row" href="#book" aria-label={`${s.title} — book a call`}>
+              <span class="num">{s.num}</span>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+              <span class="cta">
+                <span>Book a call</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </a>
+          </li>
         ))
       }
+    </ul>
+
+    <div class="chain reveal">
+      <span class="rail" aria-hidden="true"><i></i></span>
+      <ol>
+        {
+          chain.map((step, i) => (
+            <li style={`--i:${i}`}>
+              <span class="dot" aria-hidden="true" />
+              <span class="step-n">0{i + 1}</span>
+              {step}
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </div>
 </section>
 
 <style>
-  .svc-grid {
+  .rows {
+    border-bottom: 1px solid var(--line);
+  }
+  .row {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
+    grid-template-columns: 84px minmax(0, 1.15fr) minmax(0, 1fr) 150px;
+    align-items: center;
+    gap: 24px;
+    padding: 38px 0;
+    border-top: 1px solid var(--line);
   }
-  .svc {
-    padding: 24px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    transition:
-      transform 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+  .row::before {
+    content: "";
+    position: absolute;
+    /* stays inside the page gutter at every width */
+    inset: 0 -20px;
+    border-radius: 18px;
+    background: linear-gradient(90deg, rgba(255, 182, 92, 0.1), rgba(255, 182, 92, 0.02) 55%, transparent);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
   }
-  .svc:hover {
-    transform: translateY(-2px);
-    border-color: var(--line-2);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  .row > * {
+    position: relative;
   }
-  .svc-num {
+  .num {
     font-family: var(--font-mono);
     font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--faint);
+    transition: color 0.3s ease;
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 330;
+    letter-spacing: -0.028em;
+    line-height: 1.05;
+    transition: transform 0.6s var(--ease);
+  }
+  .row p {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 44ch;
+    text-wrap: pretty;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  .cta span {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition:
+      opacity 0.35s ease,
+      transform 0.5s var(--ease);
+  }
+  .cta svg {
+    width: 40px;
+    height: 40px;
+    padding: 11px;
+    border-radius: 50%;
+    border: 1px solid var(--line-2);
+    color: var(--text);
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+  .row:hover::before,
+  .row:focus-visible::before {
+    opacity: 1;
+  }
+  .row:hover .num {
+    color: var(--accent);
+  }
+  .row:hover h3 {
+    transform: translateX(12px);
+  }
+  .row:hover .cta span {
+    opacity: 1;
+    transform: none;
+  }
+  .row:hover .cta svg {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  /* ---------- engagement signal chain ---------- */
+  .chain {
+    position: relative;
+    margin-top: 72px;
+    padding: 30px 34px 28px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(243, 238, 230, 0.02);
+  }
+  .rail {
+    position: absolute;
+    top: 34px;
+    left: 38px;
+    width: calc((100% - 68px) * 0.75);
+    height: 1px;
+    background: var(--line-2);
+  }
+  .rail i {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: run 6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  @keyframes run {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+    5%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+  .chain ol {
+    position: relative;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .chain li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: clamp(17px, 2vw, 24px);
+    font-weight: 360;
+    letter-spacing: -0.02em;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    margin-bottom: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--line-2);
+    background: var(--bg);
+    animation: glow 6s infinite;
+    /* light up as the pulse passes — the ease curve reaches each third a little off-linear */
+    animation-delay: calc(var(--i) * 1.9s + 0.2s);
+  }
+  @keyframes glow {
+    0%,
+    100% {
+      border-color: var(--line-2);
+      background: var(--bg);
+      box-shadow: none;
+    }
+    4%,
+    16% {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent);
+    }
+  }
+  .step-n {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
     color: var(--faint);
   }
-  .svc h3 {
-    font-family: var(--font-body);
-    font-size: 18px;
-    font-weight: 600;
-    margin: 40px 0 10px;
-    letter-spacing: -0.01em;
+
+  @media (max-width: 960px) {
+    .row {
+      grid-template-columns: 44px minmax(0, 1fr) 40px;
+      gap: 6px 12px;
+      padding: 28px 0;
+    }
+    .row p {
+      grid-column: 2;
+      grid-row: 2;
+    }
+    .cta {
+      grid-column: 3;
+      grid-row: 1 / span 2;
+    }
+    .cta span {
+      display: none;
+    }
+    .num {
+      align-self: start;
+      padding-top: 12px;
+    }
   }
-  .svc p {
-    font-size: 13.5px;
-    color: var(--muted);
-    line-height: 1.65;
-  }
-  @media (max-width: 1000px) {
-    .svc-grid {
-      grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 760px) {
+    .row::before {
+      inset: 0 -12px;
     }
   }
   @media (max-width: 560px) {
-    .svc-grid {
-      grid-template-columns: 1fr;
+    .chain {
+      padding: 24px 20px 22px;
+    }
+    .rail {
+      top: 28px;
+      left: 24px;
+      width: calc((100% - 40px) * 0.75);
+    }
+    .row:hover h3 {
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rail i {
+      display: none;
+    }
+    .dot {
+      animation: none;
     }
   }
 </style>

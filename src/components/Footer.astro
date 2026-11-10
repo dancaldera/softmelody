@@ -1,42 +1,180 @@
+---
+import { products } from "../data/products";
+
+const sections = [
+  { href: "#products", label: "Products" },
+  { href: "#services", label: "Services" },
+  { href: "#about", label: "About" },
+  { href: "#book", label: "Book a call" },
+  { href: "#contact", label: "Contact" },
+];
+const elsewhere = [
+  { href: "https://github.com/dancaldera", label: "GitHub" },
+  { href: "https://linkedin.com/in/daniel-caldera", label: "LinkedIn" },
+  { href: "https://x.com/_dancaldera", label: "X" },
+  { href: "mailto:d@softmelody.dev", label: "d@softmelody.dev" },
+];
+---
+
 <footer>
-  <div class="wrap foot">
-    <small>© <span id="year">2026</span> Softmelody. All rights reserved.</small>
-    <div class="foot-links">
-      <a href="https://app.softmelody.dev/" target="_blank" rel="noopener">Softmelody App</a>
-      <a href="https://id.softmelody.dev/" target="_blank" rel="noopener">ID</a>
-      <a href="https://www.openpos.xyz/" target="_blank" rel="noopener">OpenPOS</a>
-      <a href="https://github.com/dancaldera" target="_blank" rel="noopener">GitHub</a>
+  <div class="wrap">
+    <div class="cols">
+      <div class="lead">
+        <a class="brand" href="#top" aria-label="Softmelody home">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M4 16h3l2.5-8 4 16 3.5-12 2.5 6 2-4H28" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          softmelody
+        </a>
+        <p>Enterprise-grade AI, engineered to ship.</p>
+      </div>
+      <nav aria-label="Products">
+        <h3>Products</h3>
+        <ul>
+          {
+            products.map((p) => (
+              <li>
+                <a href={p.url} target="_blank" rel="noopener">{p.name}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <nav aria-label="Site">
+        <h3>Studio</h3>
+        <ul>
+          {sections.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+        </ul>
+      </nav>
+      <nav aria-label="Elsewhere">
+        <h3>Elsewhere</h3>
+        <ul>
+          {
+            elsewhere.map((s) => (
+              <li>
+                <a href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel="noopener">{s.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="base">
+      <small>© <span id="year">2026</span> Softmelody. All rights reserved.</small>
+      <a class="top" href="#top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </div>
+
+  <div class="wordmark" aria-hidden="true">softmelody</div>
 </footer>
 
 <style>
   footer {
+    position: relative;
+    overflow: hidden;
     border-top: 1px solid var(--line);
-    padding: 36px 0;
+    padding: 80px 0 0;
   }
-  .foot {
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+    gap: 48px 32px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+  .brand svg {
+    width: 26px;
+    height: 26px;
+    color: var(--accent);
+  }
+  .lead p {
+    color: var(--muted);
+    font-size: 15px;
+    margin-top: 14px;
+    max-width: 26ch;
+  }
+  h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 18px;
+  }
+  li + li {
+    margin-top: 10px;
+  }
+  li a {
+    font-size: 15px;
+    color: var(--muted);
+    transition: color 0.25s ease;
+  }
+  li a:hover {
+    color: var(--accent);
+  }
+  .base {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-  }
-  .foot small {
-    color: var(--faint);
-    font-size: 13px;
-  }
-  .foot-links {
-    display: flex;
-    gap: 22px;
-  }
-  .foot-links a {
+    margin-top: 72px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
     font-size: 13px;
     color: var(--faint);
-    transition: color 0.25s;
   }
-  .foot-links a:hover {
+  .top {
+    transition: color 0.25s ease;
+  }
+  .top:hover {
     color: var(--text);
+  }
+  /* Oversized wordmark, sinking below the fold of the footer. */
+  .wordmark {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(80px, 23.5vw, 420px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    text-align: center;
+    white-space: nowrap;
+    margin: 8px 0 -0.15em;
+    padding-right: 0.04em;
+    color: transparent;
+    background: linear-gradient(180deg, rgba(255, 182, 92, 0.55) 8%, rgba(243, 238, 230, 0.1) 58%, transparent 88%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @media (max-width: 820px) {
+    footer {
+      padding-top: 64px;
+    }
+    .cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .lead {
+      grid-column: 1 / -1;
+    }
+    .base {
+      margin-top: 56px;
+      /* keep clear of the floating "Talk to Melody" button */
+      padding-right: 0;
+    }
   }
 </style>
 

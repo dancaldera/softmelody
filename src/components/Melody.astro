@@ -1,0 +1,439 @@
+---
+/* Deterministic bar heights, so the waveform has a shape instead of noise. */
+const amps = Array.from({ length: 46 }, (_, i) =>
+  (0.22 + 0.78 * Math.abs(Math.sin(i * 0.55) * Math.cos(i * 0.21 + 0.4))).toFixed(2),
+);
+---
+
+<section id="melody" class="melody">
+  <div class="wrap melody-grid">
+    <div class="melody-copy reveal">
+      <div class="sec-tag"><span class="led"></span>Flagship <b>/ Voice AI</b></div>
+      <h2 class="sec-title">Meet Melody. The voice agent that <em>books this call.</em></h2>
+      <p class="sec-sub">
+        Melody is a live voice agent running on the Softmelody App. Talk to it right here in your
+        browser — it will find a time and book your consultation while you speak.
+      </p>
+      <div class="melody-ctas">
+        <button class="btn btn-primary" type="button" data-open-agent>
+          <span class="mic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+              <path d="M5 10a7 7 0 0 0 14 0M12 17v4"></path>
+            </svg>
+          </span>
+          Talk to Melody
+        </button>
+        <a class="link-arrow" href="https://app.softmelody.dev/" target="_blank" rel="noopener">
+          See the Softmelody App <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <ul class="flows" aria-label="Call workflows">
+        <li><span>01</span>Inbound</li>
+        <li><span>02</span>Outbound</li>
+        <li><span>03</span>Support</li>
+      </ul>
+    </div>
+
+    <div class="stage reveal" style="--d:.12s" aria-hidden="true">
+      <div class="rings"></div>
+      <div class="panel" id="call-panel">
+        <div class="panel-head">
+          <span class="panel-title"><span class="led live"></span>Melody · live call</span>
+          <span id="call-timer">00:00</span>
+        </div>
+        <div class="wave">
+          {amps.map((a, i) => <span class="bar" style={`--i:${i};--amp:${a}`} />)}
+        </div>
+        <div class="transcript">
+          <div class="t-line">
+            <span class="speaker">Caller</span>
+            <span class="caller-text"><span id="t-caller"></span></span>
+          </div>
+          <div class="t-line">
+            <span class="speaker agent">Melody</span>
+            <span class="agent-text"><span id="t-agent"></span><span class="caret"></span></span>
+          </div>
+        </div>
+        <div class="pipeline">
+          <span class="rail"></span>
+          <span class="pulse"></span>
+          <div class="node"><span class="node-dot" style="--nd:0.1s"></span>Transcribe</div>
+          <div class="node"><span class="node-dot" style="--nd:1.3s"></span>Reason</div>
+          <div class="node"><span class="node-dot" style="--nd:2.5s"></span>Act</div>
+        </div>
+        <div class="panel-foot">
+          <span>latency <b>380 ms</b></span>
+          <span>confidence <b>98%</b></span>
+          <span>sentiment <b>positive</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const panel = document.getElementById("call-panel");
+
+  /* ---------- call timer ---------- */
+  const timerEl = document.getElementById("call-timer");
+  if (timerEl && !reduced) {
+    let secs = 0;
+    const fmt = (s: number) =>
+      `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    setInterval(() => {
+      secs = (secs + 1) % 600;
+      timerEl.textContent = fmt(secs);
+    }, 1000);
+  }
+
+  /* ---------- transcript typewriter ---------- */
+  const exchanges = [
+    ["Hi, I need to move my appointment to Thursday.", "Done — Thursday at 10:30 AM. Confirmation sent by SMS."],
+    ["Can you verify it's really me first?", "Identity confirmed. Your record is unlocked."],
+    ["What's the balance on my last invoice?", "$1,240.00, due on the 28th. Want a payment link?"],
+  ];
+  const tCaller = document.getElementById("t-caller");
+  const tAgent = document.getElementById("t-agent");
+  const caret = panel?.querySelector<HTMLElement>(".caret");
+  if (tCaller && tAgent) {
+    if (reduced) {
+      tCaller.textContent = exchanges[0]![0]!;
+      tAgent.textContent = exchanges[0]![1]!;
+    } else {
+      let idx = 0;
+      const typeInto = (el: HTMLElement, text: string, ms: number, done: () => void) => {
+        let i = 0;
+        const step = () => {
+          el.textContent = text.slice(0, ++i);
+          if (i < text.length) setTimeout(step, ms);
+          else done();
+        };
+        step();
+      };
+      const run = () => {
+        const [caller, agent] = exchanges[idx]!;
+        caret?.classList.remove("on");
+        panel?.classList.remove("agent-speaking");
+        typeInto(tCaller, caller!, 28, () => {
+          setTimeout(() => {
+            caret?.classList.add("on");
+            panel?.classList.add("agent-speaking");
+            typeInto(tAgent, agent!, 22, () => {
+              setTimeout(() => {
+                caret?.classList.remove("on");
+                panel?.classList.remove("agent-speaking");
+                tCaller.textContent = "";
+                tAgent.textContent = "";
+                idx = (idx + 1) % exchanges.length;
+                run();
+              }, 2600);
+            });
+          }, 500);
+        });
+      };
+      run();
+    }
+  }
+</script>
+
+<style>
+  .melody {
+    padding-top: 170px;
+    overflow-x: clip;
+  }
+  .melody-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 72px;
+    align-items: center;
+  }
+  .melody-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 26px;
+    margin-top: 38px;
+  }
+  .mic svg {
+    width: 16px;
+    height: 16px;
+  }
+  .btn:hover .mic svg {
+    transform: none;
+  }
+  .flows {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .flows li {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--text);
+  }
+  .flows span {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  /* ---------- live call panel ---------- */
+  .stage {
+    position: relative;
+  }
+  /* Sound rings radiating from behind the console. */
+  .rings {
+    position: absolute;
+    inset: -22% -14%;
+    z-index: 0;
+    background:
+      radial-gradient(closest-side, rgba(255, 182, 92, 0.15), transparent 70%),
+      repeating-radial-gradient(circle at 50% 50%, transparent 0 46px, rgba(243, 238, 230, 0.05) 46px 47px);
+    -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+  }
+  .panel {
+    position: relative;
+    z-index: 1;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    padding: 26px 28px 24px;
+    background:
+      linear-gradient(180deg, rgba(243, 238, 230, 0.045), transparent 38%),
+      var(--surface);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 50px 100px -40px rgba(0, 0, 0, 0.9),
+      0 0 0 6px rgba(243, 238, 230, 0.025);
+    font-family: var(--font-mono);
+  }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .panel-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wave {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 84px;
+    margin: 24px 0 22px;
+    padding: 0 2px;
+  }
+  .bar {
+    width: 3px;
+    border-radius: 2px;
+    background: var(--text);
+    height: 100%;
+    transform-origin: center;
+    animation: wave 1.5s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -0.09s);
+    transition: background 0.5s ease;
+  }
+  .agent-speaking .bar {
+    background: var(--accent);
+  }
+  @keyframes wave {
+    from {
+      transform: scaleY(0.1);
+      opacity: 0.3;
+    }
+    to {
+      transform: scaleY(var(--amp));
+      opacity: 0.95;
+    }
+  }
+
+  .t-line {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    min-height: 3.2em;
+  }
+  .t-line + .t-line {
+    margin-top: 8px;
+  }
+  .speaker {
+    color: var(--faint);
+    width: 58px;
+    flex-shrink: 0;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+  .speaker.agent {
+    color: var(--accent);
+  }
+  .caller-text {
+    color: var(--muted);
+  }
+  .agent-text {
+    color: var(--text);
+  }
+  .caret {
+    display: none;
+    width: 7px;
+    height: 1.05em;
+    background: var(--accent);
+    margin-left: 3px;
+    vertical-align: -3px;
+    animation: blink 1s steps(1) infinite;
+  }
+  .caret.on {
+    display: inline-block;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .pipeline {
+    margin-top: 18px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .rail {
+    position: absolute;
+    top: calc(20px + 4px);
+    left: 16.66%;
+    right: 16.66%;
+    height: 1px;
+    background: var(--line-2);
+  }
+  .node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  .node-dot {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1px solid var(--line-2);
+    background: var(--surface);
+    animation: light 3.6s infinite;
+    animation-delay: var(--nd, 0s);
+  }
+  @keyframes light {
+    0%,
+    100% {
+      border-color: var(--line-2);
+      background: var(--surface);
+      box-shadow: none;
+    }
+    8%,
+    22% {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+  }
+  .pulse {
+    position: absolute;
+    top: calc(20px + 4px - 2px);
+    left: 16.66%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+    animation: travel 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  @keyframes travel {
+    0% {
+      left: 16.66%;
+      opacity: 0;
+    }
+    6%,
+    94% {
+      opacity: 1;
+    }
+    100% {
+      left: 83.33%;
+      opacity: 0;
+    }
+  }
+
+  .panel-foot {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .panel-foot b {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  @media (max-width: 1000px) {
+    .melody-grid {
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
+  }
+  @media (max-width: 760px) {
+    .melody {
+      padding-top: 104px;
+    }
+    .panel {
+      padding: 22px 20px 20px;
+    }
+    .wave {
+      height: 64px;
+    }
+    .bar:nth-child(even) {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bar {
+      animation: none;
+      transform: scaleY(var(--amp));
+      opacity: 0.7;
+    }
+    .pulse {
+      display: none;
+    }
+    .node-dot {
+      animation: none;
+    }
+  }
+</style>
