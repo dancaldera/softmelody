@@ -62,7 +62,7 @@
     padding: 16px 16px 16px 24px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    background: rgba(243, 238, 230, 0.02);
+    background: rgba(var(--fg-rgb), 0.02);
   }
   .agent-card p {
     flex: 1;
@@ -107,10 +107,8 @@
     width: 100%;
     height: 700px;
     border: 1px solid var(--line);
-    border-radius: 24px;
-    background:
-      radial-gradient(70% 60% at 50% 0%, rgba(255, 182, 92, 0.06), transparent 70%),
-      var(--bg-2);
+    border-radius: var(--radius);
+    background: var(--bg-2);
     overflow: hidden;
   }
   .cal-loading {
@@ -143,11 +141,11 @@
     gap: 11px;
     padding: 15px 22px 15px 18px;
     border: 0;
-    border-radius: 999px;
-    background: var(--accent);
-    color: var(--accent-ink);
+    border-radius: 12px;
+    background: var(--text);
+    color: var(--ink);
     box-shadow:
-      0 14px 40px -10px rgba(255, 182, 92, 0.55),
+      0 14px 40px -12px rgba(0, 0, 0, 0.8),
       0 4px 14px rgba(0, 0, 0, 0.4);
     font: 600 14px var(--font-body);
     cursor: pointer;
@@ -166,26 +164,10 @@
     transform: none;
     pointer-events: auto;
   }
-  .agent-launcher::before {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(
-      110deg,
-      transparent 20%,
-      rgba(255, 255, 255, 0.12) 38%,
-      rgba(255, 255, 255, 0.6) 50%,
-      rgba(255, 255, 255, 0.12) 62%,
-      transparent 80%
-    );
-    content: "";
-    transform: translateX(-130%);
-    animation: agent-shimmer 3.2s ease-in-out infinite;
-  }
   .agent-launcher.show:not(.tuck):hover {
     transform: translateY(-3px);
     box-shadow:
-      0 20px 50px -10px rgba(255, 182, 92, 0.7),
+      0 20px 50px -12px rgba(0, 0, 0, 0.9),
       0 4px 14px rgba(0, 0, 0, 0.4);
   }
   .agent-pulse {
@@ -193,14 +175,14 @@
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: var(--accent-ink);
+    background: #16a34a;
   }
   .agent-pulse::after {
     content: "";
     position: absolute;
     inset: -5px;
     border-radius: 50%;
-    border: 1.5px solid var(--accent-ink);
+    border: 1.5px solid #16a34a;
     animation: ping 2s ease-out infinite;
   }
   @keyframes ping {
@@ -211,15 +193,6 @@
     to {
       transform: scale(1.5);
       opacity: 0;
-    }
-  }
-  @keyframes agent-shimmer {
-    0%,
-    58% {
-      transform: translateX(-130%);
-    }
-    100% {
-      transform: translateX(130%);
     }
   }
 
@@ -241,7 +214,7 @@
     overflow: hidden;
   }
   .agent-dialog::backdrop {
-    background: rgba(5, 4, 3, 0.55);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
   }
@@ -267,9 +240,8 @@
   .agent-dialog-head h2 {
     margin: 8px 0 0;
     font-family: var(--font-display);
-    font-variation-settings: "SOFT" 100;
-    font-size: 26px;
-    font-weight: 360;
+    font-size: 22px;
+    font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 1.1;
   }
@@ -279,7 +251,7 @@
     height: 38px;
     place-items: center;
     border: 1px solid var(--line-2);
-    border-radius: 50%;
+    border-radius: 10px;
     background: transparent;
     color: var(--text);
     font-size: 24px;
@@ -303,7 +275,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .agent-launcher::before,
     .agent-pulse::after,
     .agent-wave i {
       animation: none;
@@ -386,8 +357,8 @@
     theme: "dark",
     layout: "month_view",
     cssVarsPerTheme: {
-      light: { "cal-brand": "#15120e" },
-      dark: { "cal-brand": "#ffb65c" },
+      light: { "cal-brand": "#09090b" },
+      dark: { "cal-brand": "#7aa2ff" },
     },
   });
 

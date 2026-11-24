@@ -6,10 +6,10 @@ Landing page for **Softmelody** — an independent AI consultancy. Enterprise-gr
 
 [Astro](https://astro.build) — static site, zero client framework. Vanilla TS + scoped CSS with:
 
-- A warm-dark "hi-fi at night" palette (ivory type, one amber accent) with a single inverted paper block for the closing CTA; Fraunces for display, Geist + Geist Mono for text
-- A playable hero: five canvas strings (a treble staff tuned to Em9) that pluck when the cursor crosses them, when the page scrolls past a resting cursor, or on tap — with opt-in WebAudio sound, off by default
+- A neutral graphite palette (near-white type, one restrained blue accent) with a single inverted light block for the closing CTA; Geist for display and text, Geist Mono for labels
+- A typographic hero over a faint engineering grid, with a facts band (products shipped, live, industries) read from the product data
 - A bento of product cards, each with its own small animated scene and a cursor-following border light
-- Scroll-reveal animations and a word-by-word statement in About
+- Scroll-reveal animations
 - Contact section with copy-email and mailto composer; Cal.com booking embed and the Melody voice agent dialog
 - `prefers-reduced-motion` fully respected
 
@@ -17,11 +17,10 @@ Landing page for **Softmelody** — an independent AI consultancy. Enterprise-gr
 
 ```
 src/
-├── layouts/Layout.astro     # head, meta, fonts, film grain, reveal observer
+├── layouts/Layout.astro     # head, meta, fonts, reveal observer
 ├── pages/index.astro        # page composition
-├── components/              # Nav, Hero, Ticker, Melody, Products (+ ProductVisual), Services, About, BookCall, Contact, Footer
-├── data/products.ts         # the product list — cards, footer links and the tally all read from it
-├── scripts/sound.ts         # opt-in WebAudio pluck synth shared by the hero strings and product cards
+├── components/              # Nav, Hero, Melody, Products (+ ProductVisual), Services, About, BookCall, Contact, Footer
+├── data/products.ts         # the product list — cards, footer links, hero facts and the tally all read from it
 └── styles/global.css        # design tokens + shared utilities
 public/
 ├── favicon.svg

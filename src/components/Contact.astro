@@ -1,10 +1,6 @@
 <section id="contact" class="contact">
   <div class="wrap">
     <div class="paper reveal">
-      <svg class="staff" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 20H1200M0 40H1200M0 60H1200M0 80H1200M0 100H1200"></path>
-      </svg>
-
       <div class="avail"><span class="led live"></span>Currently taking new engagements</div>
       <h2>Let's build something <em>intelligent.</em></h2>
       <p class="contact-sub">
@@ -76,40 +72,21 @@
   .contact {
     padding-bottom: 120px;
   }
-  /* The one inverted block on the page: ivory paper, ink type. */
+  /* The one inverted block on the page: light surface, dark type. */
   .paper {
     position: relative;
     overflow: hidden;
-    border-radius: 36px;
+    border-radius: 24px;
     padding: clamp(56px, 8vw, 112px) clamp(24px, 6vw, 96px) clamp(48px, 6vw, 80px);
     color: var(--ink);
     background:
-      radial-gradient(60% 70% at 85% 0%, rgba(255, 182, 92, 0.55), transparent 70%),
-      radial-gradient(50% 60% at 0% 100%, rgba(255, 122, 82, 0.18), transparent 70%),
+      radial-gradient(60% 70% at 85% 0%, rgba(var(--accent-rgb), 0.22), transparent 70%),
       var(--paper);
     text-align: center;
   }
   .paper ::selection {
     background: var(--ink);
     color: var(--paper);
-  }
-  .staff {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 34px;
-    width: 100%;
-    height: 120px;
-    pointer-events: none;
-  }
-  .staff path {
-    fill: none;
-    stroke: var(--paper-line);
-    stroke-width: 1;
-    vector-effect: non-scaling-stroke;
-  }
-  .paper > *:not(.staff) {
-    position: relative;
   }
 
   .avail {
@@ -118,7 +95,7 @@
     gap: 12px;
     font-family: var(--font-mono);
     font-size: 12px;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--ink-muted);
     padding: 8px 16px;
@@ -127,27 +104,21 @@
     background: rgba(255, 255, 255, 0.35);
   }
   .avail .led {
-    background: #1f9d55;
-    box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.18);
-    animation: breathe 2.4s ease-in-out infinite;
-  }
-  @keyframes breathe {
-    50% {
-      opacity: 0.4;
-    }
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
   }
   h2 {
     font-family: var(--font-display);
-    font-variation-settings: "SOFT" 100;
-    font-size: clamp(40px, 7.4vw, 108px);
-    font-weight: 300;
-    letter-spacing: -0.04em;
-    line-height: 0.98;
+    font-size: clamp(36px, 5.6vw, 72px);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
     margin-top: 30px;
     text-wrap: balance;
   }
   h2 em {
-    font-style: italic;
+    font-style: normal;
+    color: var(--ink-muted);
   }
   .contact-sub {
     color: var(--ink-muted);
@@ -161,7 +132,7 @@
     color: var(--ink);
     text-decoration: underline;
     text-underline-offset: 4px;
-    text-decoration-color: rgba(21, 18, 14, 0.35);
+    text-decoration-color: rgba(9, 9, 11, 0.35);
     transition: text-decoration-color 0.2s ease;
   }
   .inline-link:hover {
@@ -181,12 +152,12 @@
     align-items: center;
     gap: 14px;
     font-family: var(--font-mono);
-    font-size: clamp(17px, 2.6vw, 26px);
+    font-size: clamp(16px, 2vw, 20px);
     font-weight: 500;
     letter-spacing: -0.01em;
     color: var(--paper);
-    padding: 20px 34px;
-    border-radius: 999px;
+    padding: 18px 28px;
+    border-radius: 12px;
     background: var(--ink);
     transition:
       transform 0.35s var(--ease),
@@ -194,12 +165,13 @@
   }
   .mail-link:hover {
     transform: translateY(-3px);
-    box-shadow: 0 22px 40px -18px rgba(21, 18, 14, 0.7);
+    box-shadow: 0 22px 40px -18px rgba(9, 9, 11, 0.7);
   }
   .mail-link svg {
     width: 22px;
     height: 22px;
-    color: var(--accent);
+    color: var(--paper);
+    opacity: 0.7;
   }
   .copy-btn {
     display: inline-flex;
@@ -208,11 +180,11 @@
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--ink);
-    padding: 0 26px;
+    padding: 0 22px;
     min-height: 56px;
-    border-radius: 999px;
+    border-radius: 12px;
     cursor: pointer;
-    border: 1px solid rgba(21, 18, 14, 0.3);
+    border: 1px solid rgba(9, 9, 11, 0.3);
     background: transparent;
     transition:
       background 0.25s ease,
@@ -236,8 +208,8 @@
     max-width: 680px;
     margin: 22px auto 0;
     padding: 6px;
-    border-radius: 999px;
-    border: 1px solid rgba(21, 18, 14, 0.2);
+    border-radius: 14px;
+    border: 1px solid rgba(9, 9, 11, 0.16);
     background: rgba(255, 255, 255, 0.45);
     transition:
       border-color 0.25s ease,
@@ -245,7 +217,7 @@
   }
   .contact-form:focus-within {
     border-color: var(--ink);
-    box-shadow: 0 0 0 4px rgba(21, 18, 14, 0.08);
+    box-shadow: 0 0 0 4px rgba(9, 9, 11, 0.08);
   }
   .contact-form input {
     flex: 1 1 0;
@@ -255,17 +227,17 @@
     color: var(--ink);
     padding: 12px 18px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 9px;
     background: transparent;
     outline: none;
   }
   .contact-form input:first-child {
     flex: 0.55 1 0;
-    border-right: 1px solid rgba(21, 18, 14, 0.14);
-    border-radius: 999px 0 0 999px;
+    border-right: 1px solid rgba(9, 9, 11, 0.12);
+    border-radius: 9px 0 0 9px;
   }
   .contact-form input::placeholder {
-    color: #857c6c;
+    color: #71717a;
   }
   .send {
     display: inline-flex;
@@ -275,7 +247,7 @@
     font: 500 14px var(--font-body);
     padding: 13px 22px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 9px;
     cursor: pointer;
     color: var(--paper);
     background: var(--ink);
@@ -302,10 +274,10 @@
   .social {
     width: 46px;
     height: 46px;
-    border-radius: 50%;
+    border-radius: 12px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(21, 18, 14, 0.22);
+    border: 1px solid rgba(9, 9, 11, 0.16);
     color: var(--ink);
     background: rgba(255, 255, 255, 0.3);
     transition:
@@ -327,7 +299,7 @@
 
   @media (max-width: 640px) {
     .paper {
-      border-radius: 26px;
+      border-radius: 20px;
     }
     .mail-link {
       padding: 18px 24px;
@@ -353,7 +325,7 @@
       flex: none;
       border-radius: 0;
       border-right: 0;
-      border-bottom: 1px solid rgba(21, 18, 14, 0.14);
+      border-bottom: 1px solid rgba(9, 9, 11, 0.14);
       padding: 14px 12px;
     }
     .send {
